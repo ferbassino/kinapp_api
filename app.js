@@ -19,7 +19,7 @@ app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 app.use(express.json());
 app.use(cors());
 app.get("/", (request, response) => {
-  response.json({ success: true, message: "welcome to backend zone" });
+  response.json({ success: true, message: "welcome to backend" });
 });
 
 app.use(motionRouter);
