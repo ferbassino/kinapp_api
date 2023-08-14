@@ -21,6 +21,9 @@ app.use(cors());
 app.get("/", (request, response) => {
   response.json({ success: true, message: "welcome to backend" });
 });
+app.get("/kin", (request, response) => {
+  response.json({ success: true, message: "kinapp" });
+});
 
 app.use(motionRouter);
 app.use(userRouter);
