@@ -1,0 +1,18 @@
+POST http://localhost:3001/api/client/create
+Content-Type: application/json
+
+{
+    "email":"papelito@gmail.com",
+    "password":"0OwViH47",
+    "birthDate":50,
+    "weight":80,
+    "size":170,
+    "gender":"female",
+    "pALevel":"low",
+    "userId":"6483510a326756354bca67e9",
+    "roles":{"adm":"true", "costumer": "false"},
+    "data":{
+        "name":"fernado",
+        "surname":"bassino"
+    }
+}

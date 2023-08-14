@@ -1,0 +1,8 @@
+POST http://localhost:3001/sign-out
+Content-Type: application/json
+Authorization: jwt eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDc2M2E4MGE5NTFmNGQ4ZGNmODlkNmMiLCJpYXQiOjE2ODU0Njk4NDcsImV4cCI6MTY4NTU1NjI0N30.YuFlD82oH_l5JBulsgJQytgUTgYIpI3JFMUr70jWr0w
+
+{
+    "email": "baskin@gmail.com",
+    "password": "12345678"
+}

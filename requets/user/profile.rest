@@ -1,0 +1,8 @@
+POST http://localhost:3001/profile
+Content-Type: application/json
+Authorization: jwt eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDdmNWZhMGZiZmEzZjQzOTc0Y2UzZmQiLCJpYXQiOjE2ODYwODk2MDUsImV4cCI6MTY4NjE3NjAwNX0.8r3jiMfjh6oDC9I2NWoYBFk7HRkrqcNb8xjj4tefWGs
+
+{
+    "email": "ferbassino@gmail.com",
+    "password": "12345678"
+}

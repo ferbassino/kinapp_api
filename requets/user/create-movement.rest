@@ -1,0 +1,8 @@
+POST http://localhost:3001/create-movement
+Content-Type: application/json
+Authorization: jwt eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDcwYmY0NmMxNTJkZjA0OGNlZTgzNTMiLCJpYXQiOjE2ODUxMTg5MDUsImV4cCI6MTY4NTIwNTMwNX0.XfFZGxJMlFOnzUkxnx4yKFMpwzJjhdESVbXfp6RlgIk
+
+{
+    "email": "baskin@gmail.com",
+    "password": "12345678"
+}

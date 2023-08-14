@@ -1,0 +1,7 @@
+POST http://localhost:3001/sign-in
+Content-Type: application/json
+
+{
+    "email": "oestekinesiologia@gmail.com",
+    "password": "87654321"
+}

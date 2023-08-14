@@ -1,0 +1,1 @@
+DELETE http://localhost:3001/api/imudata/64ca96cef4f867835aad188c

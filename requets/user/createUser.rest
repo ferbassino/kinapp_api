@@ -1,0 +1,40 @@
+POST http://localhost:3001/create-user
+Content-Type: application/json
+
+{
+    "userName": "baskin",
+    "email": "kinappbiomechanics@gmail.com",
+    "password": "12345678",
+    "confirmPassword": "12345678"
+}
+###
+POST http://localhost:3001/verify-email
+Content-Type: application/json
+
+{
+    "otp": "3163",
+    "userId": "647f561c7205f12bc3910414"
+}
+###
+POST http://localhost:3001/forgot-password
+Content-Type: application/json
+
+{
+    "email": "oestekinesiologia@gmail.com"
+}
+###
+POST http://localhost:3001/reset-password?token=b8d71c6d1590804f30eba09e92c147853cf9800e0c2bdc0acb8805b78931&id=64a57e078ce2031475ae56aa
+Content-Type: application/json
+
+{
+    "password": "87654321"
+}
+###
+POST http://localhost:3001/sign-in
+Content-Type: application/json
+
+{
+    "email":"baskin@gmail.com",
+    "password": "87654321"
+}
+

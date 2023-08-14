@@ -1,0 +1,11 @@
+POST   http://localhost:3001/api/client
+Content-Type: application/json
+
+{
+    "email":"petroca@gmail.com",
+    "password":"HU22ps9"
+}
+###
+GET   http://localhost:3001/api/clients
+###
+GET http://localhost:3001/api/client
