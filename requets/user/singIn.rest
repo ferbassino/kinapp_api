@@ -2,6 +2,14 @@ POST http://localhost:3001/sign-in
 Content-Type: application/json
 
 {
-    "email": "oestekinesiologia@gmail.com",
-    "password": "87654321"
+    "email": "ferbassino@gmail.com",
+    "password": "12345678"
+}
+###
+POST https://kinapp-api.vercel.app/sign-in
+Content-Type: application/json
+
+{
+    "email": "ferbassino@gmail.com",
+    "password": "12345678"
 }
