@@ -39,25 +39,8 @@ app.use(clientRouter);
 app.use("/posts", postsRouter);
 
 app.use(testsRouter);
-app.get("/api/imudata", async (request, response) => {
-  try {
-    const imuDatas = await ImuData.find();
 
-    if (imuDatas) {
-      response.json({
-        success: true,
-        imuDatas,
-      });
-    }
-    if (!imuDatas) {
-      console.log(error.message);
-      response.status(400).end();
-    }
-  } catch (error) {
-    console.log(error.message);
-  }
-});
-// app.use(imuDataRouter);
+app.use(imuDataRouter);
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
