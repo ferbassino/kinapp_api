@@ -10,6 +10,8 @@ const postsRouter = require("./routes/posts");
 const testsRouter = require("./routes/tests");
 const bodyParser = require("body-parser");
 const imuDataRouter = require("./routes/imuData");
+const ImuData = require("./models/imuData");
+const mongoose = require("mongoose");
 
 // ------------------
 app.use(bodyParser.json({ limit: "30mb", extended: true }));
@@ -17,6 +19,7 @@ app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 // ------------------
 
 app.use(express.json());
+
 app.use(
   cors({
     origin: "*",
@@ -36,7 +39,25 @@ app.use(clientRouter);
 app.use("/posts", postsRouter);
 
 app.use(testsRouter);
-app.use(imuDataRouter);
+app.get("/api/imudata", async (request, response) => {
+  try {
+    const imuDatas = await ImuData.find();
+
+    if (imuDatas) {
+      response.json({
+        success: true,
+        imuDatas,
+      });
+    }
+    if (!imuDatas) {
+      console.log(error.message);
+      response.status(400).end();
+    }
+  } catch (error) {
+    console.log(error.message);
+  }
+});
+// app.use(imuDataRouter);
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
