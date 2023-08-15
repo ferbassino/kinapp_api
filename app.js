@@ -17,7 +17,12 @@ app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 // ------------------
 
 app.use(express.json());
-app.use(cors());
+app.use(
+  cors({
+    origin: "*",
+  })
+);
+// app.use(cors());
 app.get("/", (request, response) => {
   response.json({ success: true, message: "welcome to backend" });
 });
@@ -32,6 +37,7 @@ app.use("/posts", postsRouter);
 
 app.use(testsRouter);
 app.use(imuDataRouter);
+
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`listening on port: ${PORT}`);
