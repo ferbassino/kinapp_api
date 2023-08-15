@@ -1,8 +1,8 @@
 require("dotenv").config();
 const mongoose = require("mongoose");
-console.log("process", process.env.MONGO_URI);
-const URI =
-  "mongodb+srv://ferbassino:6U4Xnn6kaZOBjAhl@cluster0.fu84jsk.mongodb.net/kin-app-auth?retryWrites=true&w=majority";
+const PASSWORD = process.env.DB_PASSWORD;
+
+const URI = `mongodb+srv://ferbassino:${PASSWORD}@cluster0.fu84jsk.mongodb.net/kin-app-auth?retryWrites=true&w=majority`;
 module.exports = mongoose
   .connect(URI)
   .then(() => {
