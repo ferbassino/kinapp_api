@@ -306,7 +306,7 @@ exports.forgotPassword = async (req, res) => {
 
       html: generatePasswordResetTemplate(
         user.userName,
-        `https://reset-mu.vercel.app//reset-password?token=${randomBytes}&id=${user._id}`
+        `https://reset-mu.vercel.app/reset-password?token=${randomBytes}&id=${user._id}`
       ),
     });
   } catch (error) {
