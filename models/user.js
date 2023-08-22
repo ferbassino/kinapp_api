@@ -30,7 +30,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: "reader",
   },
-  object: {
+  apps: {
     type: Object,
     default: { translation: true, rotation: false, jump: false },
   },
