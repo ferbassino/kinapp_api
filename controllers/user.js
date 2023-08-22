@@ -274,7 +274,7 @@ exports.verifyEmail = async (req, res) => {
 
 exports.forgotPassword = async (req, res) => {
   const { email } = req.body;
-  console.log("email que llega del movil", email);
+
   if (!email) return sendError(res, "Please, provide a valid email");
   const user = await User.findOne({ email });
 
@@ -306,7 +306,7 @@ exports.forgotPassword = async (req, res) => {
 
       html: generatePasswordResetTemplate(
         user.userName,
-        `http://localhost:3000/reset-password?token=${randomBytes}&id=${user._id}`
+        `https://reset-mu.vercel.app//reset-password?token=${randomBytes}&id=${user._id}`
       ),
     });
   } catch (error) {
