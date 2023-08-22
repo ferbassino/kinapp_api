@@ -32,7 +32,7 @@ const userSchema = new mongoose.Schema({
   },
   object: {
     type: Object,
-    default: {},
+    default: { translation: true, rotation: false, jump: false },
   },
   motion: [
     {
