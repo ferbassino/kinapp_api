@@ -30,10 +30,9 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: "reader",
   },
-  array: Array,
   object: {
     type: Object,
-    required: true,
+    default: {},
   },
   motion: [
     {

@@ -73,8 +73,7 @@ exports.createUser = async (request, response) => {
       avatar: user.avatar ? user.avatar : "",
       verified: user.verified,
       roles: user.roles,
-      array,
-      object,
+      object: user.object,
     },
   });
 };
