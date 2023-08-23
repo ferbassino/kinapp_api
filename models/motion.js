@@ -17,32 +17,20 @@ const motionTestSchema = new mongoose.Schema({
     type: String,
     default: "",
   },
-  accArr: {
-    type: Array,
-  },
-  velX: {
-    type: Array,
-  },
   motion: {
     type: String,
     required: true,
   },
-  arrayLl: {
+
+  accData: {
     type: Array,
-    required: true,
   },
-  maxAngleLl: {
-    type: Number,
-  },
-  minAngleLl: {
-    type: Number,
-  },
-  arrayAp: {
+  gyroData: {
     type: Array,
-    required: true,
   },
-  maxAngleAp: { type: Number },
-  minAngleAp: { type: Number },
+  magData: {
+    type: Array,
+  },
   testTime: {
     type: Number,
     required: true,
