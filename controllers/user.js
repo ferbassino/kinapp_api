@@ -74,6 +74,7 @@ exports.createUser = async (request, response) => {
       verified: user.verified,
       roles: user.roles,
       object: user.apps,
+      data: user.data,
     },
   });
 };
@@ -143,6 +144,7 @@ exports.signIn = async (request, response) => {
         roles: user.roles,
         verified: user.verified,
         apps: user.apps,
+        data: user.data,
       },
       // user: userInfo,
       // token,

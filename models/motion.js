@@ -21,7 +21,6 @@ const motionTestSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-
   accData: {
     type: Array,
   },

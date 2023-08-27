@@ -34,6 +34,10 @@ const userSchema = new mongoose.Schema({
     type: Object,
     default: { translation: true, rotation: false, jump: false },
   },
+  data: {
+    type: Object,
+    default: { name: "example", cellphone: 12345678 },
+  },
   motion: [
     {
       type: mongoose.Schema.Types.ObjectId,
