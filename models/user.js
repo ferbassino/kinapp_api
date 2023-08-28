@@ -36,7 +36,7 @@ const userSchema = new mongoose.Schema({
   },
   data: {
     type: Object,
-    default: { name: "example", cellphone: 12345678 },
+    default: { state: "active", name: "example", cellphone: 12345678 },
   },
   motion: [
     {
