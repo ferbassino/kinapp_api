@@ -79,12 +79,12 @@ exports.createClient = async (request, response) => {
     const { email, password, birthDate, size, gender, userId, roles, data } =
       request.body;
 
-    const passwordHash = await bcrypt.hash(password, 8);
+    // const passwordHash = await bcrypt.hash(password, 8);
     const user = await User.findById(userId);
     // const motion = await MotionTest.findById(motionId);
     const newClient = await Client({
       email,
-      password: passwordHash,
+      password,
       birthDate,
       size,
       gender,
