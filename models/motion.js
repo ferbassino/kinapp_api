@@ -54,6 +54,14 @@ const motionTestSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  mPActivity: {
+    type: String,
+    required: true,
+  },
+  mFComponents: {
+    type: String,
+    required: true,
+  },
 
   date: { type: Date, default: Date.now },
   userId: [
