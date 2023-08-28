@@ -7,19 +7,15 @@ const motionTestSchema = new mongoose.Schema({
   },
   corporalPart: {
     type: String,
-    required: true,
   },
   segment: {
     type: String,
-    required: true,
   },
   side: {
     type: String,
-    default: "",
   },
   motion: {
     type: String,
-    required: true,
   },
   accData: {
     type: Array,
@@ -32,37 +28,28 @@ const motionTestSchema = new mongoose.Schema({
   },
   testTime: {
     type: Number,
-    required: true,
   },
   age: {
     type: Number,
-    required: true,
   },
   weight: {
     type: Number,
-    required: true,
   },
   size: {
     type: Number,
-    required: true,
   },
   gender: {
     type: String,
-    required: true,
   },
   pALevel: {
     type: String,
-    required: true,
   },
   mPActivity: {
     type: String,
-    required: true,
   },
   mFComponents: {
     type: String,
-    required: true,
   },
-
   date: { type: Date, default: Date.now },
   userId: [
     {
