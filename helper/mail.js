@@ -40,8 +40,9 @@ exports.generateEmailTemplate = (code) => {
   </head>
   <body>
     <div>
-        <div style="max-width:620px; margin:0 auto; font-family: Arial, Helvetica, sans-serif; color: #272727;">
-            <h1 style="background: #f6f6f6;padding:10px ;text-align: center; color: #272727;">We are delighted to welcome you to our team!</h1>
+        <div style="max-width:620px; margin:0 auto; font-family: Arial, Helvetica, sans-serif; color: #0f0c2e;">
+            <h1 style="background: #e27560;padding:10px ;text-align: center; color: #0f0c2e;font-size: 60px;">kinApp</h1>
+            <h1 style="background: #f6f6f6;padding:10px ;text-align: center; color: #0f0c2e;">We are delighted to welcome you to our team!</h1>
             <p>Please verify your email to continue your verification code is:</p>
             <p style="width: 80px; margin: 0 auto; font-weight: bold; text-align: center; background: #f6f6f6; border-radius: 5px; font-size: 25px;">${code}</p>
         </div>
@@ -69,8 +70,9 @@ exports.plainEmailTemplate = (heading, message) => {
   </head>
   <body>
     <div>
-        <div style="max-width:620px; margin:0 auto; font-family: Arial, Helvetica, sans-serif; color: #272727;">
-            <h1 style="background: #f6f6f6;padding:10px ;text-align: center; color: #272727;">${heading}</h1>
+        <div style="max-width:620px; margin:0 auto; font-family: Arial, Helvetica, sans-serif; color: #0f0c2e;">
+            <h1 style="background: #e27560;padding:10px ;text-align: center; color: #0f0c2e;font-size: 60px;">kinApp</h1>
+            <h1 style="background: #f6f6f6;padding:10px ;text-align: center; color: #0f0c2e;">${heading}</h1>
             <p style="max-width:500px; margin: 0 auto; font-weight: bold; text-align: center; background: #f6f6f6; border-radius: 5px; font-size: 25px;">${message}</p>
         </div>
     </div>
@@ -97,8 +99,9 @@ exports.generatePasswordResetTemplate = (userName, url) => {
   </head>
   <body>
     <div>
-        <div style="max-width:620px; margin:0 auto; font-family: Arial, Helvetica, sans-serif; color: #272727;">
-            <h1 style="background: #f6f6f6;padding:10px ;text-align: center; color: #272727;">Hi ${userName},</h1>
+        <div style="max-width:620px; margin:0 auto; font-family: Arial, Helvetica, sans-serif; color: #0f0c2e;">
+            <h1 style="background: #e27560;padding:10px ;text-align: center; color: #0f0c2e;font-size: 60px;">kinApp</h1>
+            <h1 style="background: #f6f6f6;padding:10px ;text-align: center; color: #0f0c2e;">Hi ${userName},</h1>
             <p>You recently requested to reset your password for your account. Use link below to reset it.</p>
             <a href="${url}" style="max-width:500px; margin: 0 auto; font-weight: bold; text-align: center; background: #f6f6f6; border-radius: 5px; font-size: 25px;">Reset your password</a>
         </div>

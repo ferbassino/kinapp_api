@@ -2,7 +2,7 @@ POST http://localhost:3001/api/client/create
 Content-Type: application/json
 
 {
-    "email":"papelito@gmail.com",
+    "email":"la@gmail.com",
     "password":"0OwViH47",
     "birthDate":50,
     "weight":80,
