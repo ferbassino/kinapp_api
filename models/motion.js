@@ -29,6 +29,9 @@ const motionTestSchema = new mongoose.Schema({
   testTime: {
     type: Number,
   },
+  masa: {
+    type: Number,
+  },
   age: {
     type: Number,
   },
