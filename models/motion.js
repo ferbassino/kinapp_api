@@ -66,12 +66,6 @@ const motionTestSchema = new mongoose.Schema({
       ref: "Client",
     },
   ],
-  motionId: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "MotionTest",
-    },
-  ],
 });
 
 module.exports = mongoose.model("MotionTest", motionTestSchema);

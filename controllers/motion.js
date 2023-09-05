@@ -63,12 +63,9 @@ exports.createMotionTest = async (request, response) => {
       age,
       userId,
       clientId,
-      motionId,
     } = request.body;
     const user = await User.findById(userId);
     const client = await Client.findById(clientId);
-    const motionRef = await MotionTest.findById(motionId);
-
     const motionTest = await MotionTest({
       motionType,
       corporalPart,
@@ -89,40 +86,17 @@ exports.createMotionTest = async (request, response) => {
       age,
       userId: user._id,
       clientId: client._id,
-      motionId: motionRef._id,
     });
 
     const savedMotionTest = await motionTest.save();
-
     user.motion = user.motion.concat(savedMotionTest._id);
     await user.save();
-
     client.motion = client.motion.concat(savedMotionTest._id);
-    await client.save();
 
-    motionRef.motionId = motionRef.motionId.concat(savedMotionTest._id);
-    await motionRef.save();
+    await client.save();
 
     response.json({ success: true, savedMotionTest });
   } catch (error) {
     response.json({ success: false, error: error.message });
-  }
-};
-
-exports.updateMotion = async (req, res) => {
-  try {
-    const { id } = req.params;
-
-    const result = await MotionTest.findByIdAndUpdate(
-      id,
-      {
-        motionId: req.body.motionId,
-      },
-      { new: true }
-    );
-
-    res.json({ updatedMotion: result });
-  } catch (error) {
-    console.log(error);
   }
 };
