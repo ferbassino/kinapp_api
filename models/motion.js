@@ -14,6 +14,10 @@ const motionTestSchema = new mongoose.Schema({
   side: {
     type: String,
   },
+  opposite: {
+    type: String,
+    default: "",
+  },
   motion: {
     type: String,
   },
