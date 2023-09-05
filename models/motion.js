@@ -29,7 +29,7 @@ const motionTestSchema = new mongoose.Schema({
   testTime: {
     type: Number,
   },
-  masa: {
+  mass: {
     type: Number,
   },
   age: {
@@ -64,6 +64,12 @@ const motionTestSchema = new mongoose.Schema({
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Client",
+    },
+  ],
+  motionId: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "MotionTest",
     },
   ],
 });
