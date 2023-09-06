@@ -102,3 +102,22 @@ exports.createMotionTest = async (request, response) => {
     response.json({ success: false, error: error.message });
   }
 };
+
+exports.updateMotion = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const result = await MotionTest.findByIdAndUpdate(
+      id,
+      {
+        opposite: req.body.opposite,
+      },
+      { new: true }
+    );
+    z;
+
+    res.json({ updatedMotion: result });
+  } catch (error) {
+    console.log(error);
+  }
+};
