@@ -114,7 +114,6 @@ exports.updateMotion = async (req, res) => {
       },
       { new: true }
     );
-    z;
 
     res.json({ updatedMotion: result });
   } catch (error) {
