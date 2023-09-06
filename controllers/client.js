@@ -23,7 +23,29 @@ exports.getClients = async (request, response) => {
     console.log(error.message);
   }
 };
+
 exports.getClient = async (request, response) => {
+  const { id } = request.params;
+  try {
+    const client = await Client.findById(id);
+
+    if (client) {
+      response.json({
+        success: true,
+        client,
+      });
+    }
+    if (!client) {
+      console.log(error.message);
+      response.status(400).end();
+    }
+  } catch (error) {
+    console.log(error.message);
+    response.status(400).end();
+  }
+};
+
+exports.signInClient = async (request, response) => {
   try {
     const { email, password } = request.body;
     if (!email.trim() || !password.trim())

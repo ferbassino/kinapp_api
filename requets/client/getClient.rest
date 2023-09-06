@@ -1,0 +1,2 @@
+
+GET  https://kinapp-api.vercel.app/api/client/64f8d896328ae5f1866dc878

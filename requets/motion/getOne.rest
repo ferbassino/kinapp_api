@@ -1,1 +1,1 @@
-GET  http://localhost:3001/api/motion/motionTests/6481aea0c328c71ce76ca9c
+GET  https://kinapp-api.vercel.app/api/motion/motionTests/64f8d8af328ae5f1866dc883
