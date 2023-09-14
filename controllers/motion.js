@@ -44,6 +44,7 @@ exports.getMotionTest = async (request, response) => {
 exports.createMotionTest = async (request, response) => {
   try {
     const {
+      email,
       motionType,
       corporalPart,
       segment,
@@ -68,6 +69,7 @@ exports.createMotionTest = async (request, response) => {
     const user = await User.findById(userId);
     const client = await Client.findById(clientId);
     const motionTest = await MotionTest({
+      email,
       motionType,
       corporalPart,
       segment,

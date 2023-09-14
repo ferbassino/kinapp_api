@@ -1,6 +1,9 @@
 const mongoose = require("mongoose");
 
 const motionTestSchema = new mongoose.Schema({
+  email: {
+    type: String,
+  },
   motionType: {
     type: String,
     required: true,
