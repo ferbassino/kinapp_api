@@ -55,6 +55,7 @@ router.get("/profile", isAuth, (request, response) => {
     avatar: request.user.avatar,
     id: request.user._id,
     verified: request.user.verified,
+    roles: request.user.roles,
   });
 });
 
