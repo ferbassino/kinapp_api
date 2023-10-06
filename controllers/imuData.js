@@ -53,29 +53,12 @@ exports.deleteImuData = async (req, res) => {
 
 exports.createImuData = async (request, response) => {
   try {
-    const {
-      name,
-      identifier,
-      mass,
-      array,
-      object,
-      testTime,
-      accX,
-      accY,
-      accZ,
-      accT,
-    } = request.body;
+    const { name, identifier, array, object } = request.body;
     const newImuData = new ImuData({
       name,
       identifier,
-      mass,
       array,
       object,
-      testTime,
-      accX,
-      accY,
-      accZ,
-      accT,
     });
     await newImuData.save();
     response.json({
