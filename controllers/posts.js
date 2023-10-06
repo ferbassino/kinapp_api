@@ -26,14 +26,30 @@ exports.getPost = async (req, res) => {
 };
 
 exports.createPost = async (req, res) => {
-  const { title, message, selectedFile, creator, tags } = req.body;
+  const {
+    corporalPart,
+    segment,
+    movement,
+    maxAngle,
+    minAngle,
+    averageAngle,
+    arthrology,
+    myology,
+    neurology,
+    observations,
+  } = req.body;
 
   const newPost = new Post({
-    title,
-    message,
-    selectedFile,
-    creator,
-    tags,
+    corporalPart,
+    segment,
+    movement,
+    maxAngle,
+    minAngle,
+    averageAngle,
+    arthrology,
+    myology,
+    neurology,
+    observations,
   });
 
   try {
@@ -47,12 +63,35 @@ exports.createPost = async (req, res) => {
 
 exports.updatePost = async (req, res) => {
   const { id } = req.params;
-  const { title, message, creator, selectedFile, tags } = req.body;
+  const {
+    corporalPart,
+    segment,
+    movement,
+    maxAngle,
+    minAngle,
+    averageAngle,
+    arthrology,
+    myology,
+    neurology,
+    observations,
+  } = req.body;
 
   if (!mongoose.Types.ObjectId.isValid(id))
     return res.status(404).send(`No post with id: ${id}`);
 
-  const updatedPost = { creator, title, message, tags, selectedFile, _id: id };
+  const updatedPost = {
+    corporalPart,
+    segment,
+    movement,
+    maxAngle,
+    minAngle,
+    averageAngle,
+    arthrology,
+    myology,
+    neurology,
+    observations,
+    _id: id,
+  };
 
   await Post.findByIdAndUpdate(id, updatedPost, { new: true });
 

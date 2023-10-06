@@ -11,11 +11,11 @@ const {
 
 const router = express.Router();
 
-router.get("/", getPosts);
-router.post("/", createPost);
-router.get("/:id", getPost);
-router.patch("/:id", updatePost);
-router.delete("/:id", deletePost);
-router.patch("/:id/likePost", likePost);
+router.get("/api/posts", getPosts);
+router.post("/api/posts", createPost);
+router.get("api/posts/:id", getPost);
+router.patch("/api/posts/:id", updatePost);
+router.delete("/api/posts/:id", deletePost);
+router.patch("/api/posts/:id/likePost", likePost);
 
 module.exports = router;

@@ -33,7 +33,7 @@ app.get("/", (request, response) => {
 app.use(motionRouter);
 app.use(userRouter);
 app.use(clientRouter);
-app.use("/posts", postsRouter);
+app.use(postsRouter);
 
 app.use(testsRouter);
 
