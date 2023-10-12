@@ -1,0 +1,1 @@
+DELETE http://localhost:3001/api/motion/651da6e6aafd40b9f948b69b

@@ -4,12 +4,12 @@ Content-Type: application/json
 {
     "corporalPart":"Axial",
     "segment":"Cervical",
-    "movement":"flexion",
-    "maxAngle":45,
-    "minAngle":55,
-    "averageAngle":50,
+    "movement":"extension",
+    "maxAngle":55,
+    "minAngle":65,
+    "averageAngle":60,
     "arthrology":{"vertebras":"cervicales", "articulaciones":"uncovertebrales"},
-    "myology":{"Musculo1":"largo del cuello", "musculo2":"recto anterior mayor"},
-    "neurology":{"plexo":"cervical"},
+    "myology":{"Musculo1":"complexo mayor", "musculo2":"esplenios"},
+    "neurology":{"nervios":"ramos posteriores"},
     "observations":"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but "
 }

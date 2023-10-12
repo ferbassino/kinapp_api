@@ -122,3 +122,12 @@ exports.updateMotion = async (req, res) => {
     console.log(error);
   }
 };
+exports.deleteMotion = async (req, res) => {
+  try {
+    const result = await MotionTest.findByIdAndDelete(req.params.id);
+
+    res.send(result);
+  } catch (error) {
+    console.log(error);
+  }
+};
