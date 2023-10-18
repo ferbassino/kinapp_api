@@ -117,9 +117,9 @@ exports.updateMotion = async (req, res) => {
       { new: true }
     );
 
-    res.json({ updatedMotion: result });
+    res.json({ success: true, updatedMotion: result });
   } catch (error) {
-    console.log(error);
+    response.json({ success: false, error: error.message });
   }
 };
 exports.deleteMotion = async (req, res) => {
