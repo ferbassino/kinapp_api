@@ -148,6 +148,7 @@ exports.signIn = async (request, response) => {
         verified: user.verified,
         apps: user.apps,
         data: user.data,
+        mobCode: user.mobCode,
       },
       // user: userInfo,
       // token,
@@ -390,7 +391,6 @@ exports.getUsers = async (request, response) => {
 };
 
 exports.updateUser = async (req, res) => {
-  console.log("entra al server");
   try {
     const { id } = req.params;
 
