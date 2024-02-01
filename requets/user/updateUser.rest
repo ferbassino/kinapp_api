@@ -1,0 +1,6 @@
+PUT  http://localhost:3001/user/65bbe4d7c256828f8026d0b4
+Content-Type: application/json
+
+{
+    "mobCode": "4455"
+}

@@ -388,3 +388,22 @@ exports.getUsers = async (request, response) => {
     console.log(error.message);
   }
 };
+
+exports.updateUser = async (req, res) => {
+  console.log("entra al server");
+  try {
+    const { id } = req.params;
+
+    const result = await User.findByIdAndUpdate(
+      id,
+      {
+        mobCode: req.body.mobCode,
+      },
+      { new: true }
+    );
+
+    res.json({ updatedUser: result });
+  } catch (error) {
+    console.log(error);
+  }
+};
