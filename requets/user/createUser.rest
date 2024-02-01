@@ -2,8 +2,8 @@ POST http://localhost:3001/create-user
 Content-Type: application/json
 
 {
-    "userName": "Juan",
-    "email": "juancruzvega@gmail.com",
+    "userName": "pepita",
+    "email": "pepita@gmail.com",
     "password": "12345678",
     "confirmPassword": "12345678"
 }

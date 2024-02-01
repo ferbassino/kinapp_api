@@ -17,6 +17,11 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  mobCode: {
+    type: String,
+    default: "0000",
+    required: true,
+  },
   avatar: {
     type: String,
     default: "",

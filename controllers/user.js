@@ -64,8 +64,10 @@ exports.createUser = async (request, response) => {
   }
 
   await user.save();
+  console.log("user", user);
   response.json({
     success: true,
+
     user: {
       userName: user.userName,
       email: user.email,
@@ -75,6 +77,7 @@ exports.createUser = async (request, response) => {
       roles: user.roles,
       object: user.apps,
       data: user.data,
+      mobCode: user.mobCode,
     },
   });
 };

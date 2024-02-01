@@ -159,7 +159,6 @@ exports.updateClient = async (req, res) => {
       },
       { new: true }
     );
-    z;
 
     res.json({ updatedClient: result });
   } catch (error) {

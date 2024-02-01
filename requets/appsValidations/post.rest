@@ -1,6 +1,6 @@
-POST http://localhost:3001/api/imudata
+POST https://kinapp-api.vercel.app/api/imudata
 Content-Type: application/json
 
 {
-    "name": "artro-g0"
+    "name": "reaction-time0"
 }
