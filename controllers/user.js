@@ -110,7 +110,7 @@ exports.signIn = async (request, response) => {
         message: "password does not match",
       });
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
-      expiresIn: 5000,
+      expiresIn: "1d",
     });
 
     //old tokens
@@ -135,7 +135,6 @@ exports.signIn = async (request, response) => {
     //   email: user.email,
     //   avatar: user.avatar ? user.avatar : "",
     // };
-
     response.json({
       success: true,
       user: {
@@ -151,6 +150,8 @@ exports.signIn = async (request, response) => {
         data: user.data,
         mobCode: user.mobCode,
       },
+      // user: userInfo,
+      // token,
     });
   } catch (error) {
     sendError(response, error.message, 500);
