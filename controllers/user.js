@@ -110,7 +110,7 @@ exports.signIn = async (request, response) => {
         message: "password does not match",
       });
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
-      expiresIn: "1d",
+      expiresIn: 30000,
     });
 
     //old tokens
