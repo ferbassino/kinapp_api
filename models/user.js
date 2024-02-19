@@ -45,6 +45,7 @@ const userSchema = new mongoose.Schema({
   },
   sessionDate: {
     type: Number,
+    default: 1708363553024,
   },
   motion: [
     {
