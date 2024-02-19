@@ -408,3 +408,32 @@ exports.updateUser = async (req, res) => {
     console.log(error);
   }
 };
+exports.getUser = async (request, response) => {
+  const { id } = request.params;
+  try {
+    const user = await User.findById(id);
+
+    if (user) {
+      response.json({
+        success: true,
+        user,
+      });
+    }
+    if (!user) {
+      console.log(error.message);
+      response.status(400).end();
+    }
+  } catch (error) {
+    console.log(error.message);
+    response.status(400).end();
+  }
+};
+
+exports.deleteUser = async (req, res) => {
+  try {
+    const result = await User.findByIdAndDelete(req.params.id);
+    res.send(result);
+  } catch (error) {
+    console.log(error);
+  }
+};

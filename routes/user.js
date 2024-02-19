@@ -12,6 +12,8 @@ const {
   getAllUsers,
   getUsers,
   updateUser,
+  getUser,
+  deleteUser,
 } = require("../controllers/user");
 
 const {
@@ -45,6 +47,8 @@ router.get("/verify-token", isResetTokenValid, (req, res) => {
 router.get("/sign-out", isAuth, signOut);
 router.get("/users", getUsers);
 router.put("/user/:id", updateUser);
+router.get("/api/user/:id", getUser);
+router.delete("/api/user/:id", deleteUser);
 
 router.get("/profile", isAuth, (request, response) => {
   if (!request.user)
