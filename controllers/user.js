@@ -149,6 +149,7 @@ exports.signIn = async (request, response) => {
         apps: user.apps,
         data: user.data,
         mobCode: user.mobCode,
+        sessionDate: user.sessionDate,
       },
       // user: userInfo,
       // token,

@@ -43,6 +43,9 @@ const userSchema = new mongoose.Schema({
     type: Object,
     default: { state: "active", name: "example", cellphone: 12345678 },
   },
+  sessionDate: {
+    type: Number,
+  },
   motion: [
     {
       type: mongoose.Schema.Types.ObjectId,
