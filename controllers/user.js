@@ -399,6 +399,7 @@ exports.updateUser = async (req, res) => {
       id,
       {
         mobCode: req.body.mobCode,
+        sessionDate: req.body.sessionDate,
       },
       { new: true }
     );
