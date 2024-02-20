@@ -1,6 +1,7 @@
-PUT  http://localhost:3001/user/65bbe4d7c256828f8026d0b4
+PUT  http://localhost:3001/user/65d39029152c3f315a5247ad
 Content-Type: application/json
 
 {
-    "mobCode": "4455"
+    "mobCode": "4455",
+    "sessionDate": "1708363551234"
 }
