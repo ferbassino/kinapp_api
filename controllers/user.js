@@ -400,11 +400,12 @@ exports.updateUser = async (req, res) => {
       {
         mobCode: req.body.mobCode,
         sessionDate: req.body.sessionDate,
+        client: req.body.client,
+        motion: req.body.motion,
       },
       { new: true }
     );
-
-    res.json({ updatedUser: result });
+    res.json({ success: true, updatedUser: result });
   } catch (error) {
     console.log(error);
   }
