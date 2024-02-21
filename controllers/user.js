@@ -433,8 +433,8 @@ exports.getUser = async (request, response) => {
 exports.deleteUser = async (req, res) => {
   try {
     const result = await User.findByIdAndDelete(req.params.id);
-    res.send(result);
+    response.json({ success: true, result });
   } catch (error) {
-    console.log(error);
+    response.json({ success: false, error: error.message });
   }
 };

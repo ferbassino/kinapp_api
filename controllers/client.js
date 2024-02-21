@@ -129,18 +129,16 @@ exports.createClient = async (request, response) => {
 
     response.json({ success: true, savedClient });
   } catch (error) {
-    response.json({ sucess: false, error: error.message });
+    response.json({ success: false, error: error.message });
   }
 };
 
 exports.deleteClient = async (req, res) => {
   try {
-    console.log(req.params.id);
     const result = await Client.findByIdAndDelete(req.params.id);
-    console.log(result);
-    res.send(result);
+    response.json({ success: true, result });
   } catch (error) {
-    console.log(error);
+    response.json({ success: false, error: error.message });
   }
 };
 
