@@ -400,8 +400,6 @@ exports.updateUser = async (req, res) => {
       {
         mobCode: req.body.mobCode,
         sessionDate: req.body.sessionDate,
-        client: req.body.client,
-        motion: req.body.motion,
       },
       { new: true }
     );
