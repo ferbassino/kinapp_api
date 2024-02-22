@@ -125,8 +125,8 @@ exports.updateMotion = async (req, res) => {
 exports.deleteMotion = async (req, res) => {
   try {
     const result = await MotionTest.findByIdAndDelete(req.params.id);
-    response.json({ success: true, result });
+    res.json({ success: true, result });
   } catch (error) {
-    response.json({ success: false, error: error.message });
+    res.json({ success: false, error: error.message });
   }
 };

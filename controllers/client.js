@@ -135,7 +135,7 @@ exports.createClient = async (request, response) => {
 
 exports.deleteClient = async (req, res) => {
   try {
-    const result = await Client.findByIdAndDelete(req.params.id);
+    const response = await Client.findByIdAndDelete(req.params.id);
     response.json({ success: true, result });
   } catch (error) {
     response.json({ success: false, error: error.message });
