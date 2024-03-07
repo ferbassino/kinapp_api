@@ -400,6 +400,7 @@ exports.updateUser = async (req, res) => {
       {
         mobCode: req.body.mobCode,
         sessionDate: req.body.sessionDate,
+        roles: req.body.roles,
       },
       { new: true }
     );
