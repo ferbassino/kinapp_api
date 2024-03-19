@@ -79,6 +79,10 @@ exports.getProfile = (request, response) => {
 
   response.json({
     success: true,
-    user: { token, user },
+    userName: request.user.userName,
+    email: request.user.email,
+    id: request.user._id,
+    verified: request.user.verified,
+    roles: request.user.roles,
   });
 };
