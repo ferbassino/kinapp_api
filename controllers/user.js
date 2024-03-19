@@ -64,7 +64,7 @@ exports.createUser = async (request, response) => {
   }
 
   await user.save();
-  console.log("user", user);
+
   response.json({
     success: true,
 

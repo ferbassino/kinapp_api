@@ -12,6 +12,7 @@ const bodyParser = require("body-parser");
 const imuDataRouter = require("./routes/imuData");
 const ImuData = require("./models/imuData");
 const mongoose = require("mongoose");
+const anatoUserRouter = require("./routes/anatoUserRouter");
 
 // ------------------
 app.use(bodyParser.json({ limit: "30mb", extended: true }));
@@ -34,10 +35,10 @@ app.use(motionRouter);
 app.use(userRouter);
 app.use(clientRouter);
 app.use(postsRouter);
-
 app.use(testsRouter);
-
 app.use(imuDataRouter);
+
+app.use(anatoUserRouter);
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
