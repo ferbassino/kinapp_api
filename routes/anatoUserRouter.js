@@ -15,6 +15,7 @@ const { isAuth } = require("../middlewares/auth");
 
 const multer = require("multer");
 const { isResetTokenValid } = require("../middlewares/user");
+const { anatoUserIsAuth } = require("../middlewares/anatoUserIsAuth");
 
 const storage = multer.diskStorage({});
 
@@ -42,5 +43,5 @@ router.post(
 // router.get("/sign-out", isAuth, signOut);
 
 // router.get("/users", getAllUsers);
-router.get("/api/anato-user/profile", isAuth, getProfile);
+router.get("/api/anato-user/profile", anatoUserIsAuth, getProfile);
 module.exports = router;
