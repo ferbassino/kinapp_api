@@ -2,8 +2,8 @@ POST http://localhost:3001/api/anato-user
 Content-Type: application/json
 
 {
-    "userName": "pepita",
-    "email": "pepita@gmail.com",
+    "userName": "anatomia",
+    "email": "anatomia@gmail.com",
     "password": "12345678",
     "confirmPassword": "12345678"
 }

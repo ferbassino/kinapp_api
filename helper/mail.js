@@ -42,8 +42,9 @@ exports.generateEmailTemplate = (code) => {
     <div>
         <div style="max-width:620px; margin:0 auto; font-family: Arial, Helvetica, sans-serif; color: #0f0c2e;">
             <h1 style="background: #e27560;padding:10px ;text-align: center; color: #0f0c2e;font-size: 60px;">kinApp</h1>
-            <h1 style="background: #f6f6f6;padding:10px ;text-align: center; color: #0f0c2e;">We are delighted to welcome you to our team!</h1>
-            <p>Please verify your email to continue your verification code is:</p>
+            <h1 style="background: #f6f6f6;padding:10px ;text-align: center; color: #0f0c2e;">Te damos la bienvenida al curso de análisis biomecánico del salto verical!</h1>
+            <h2 style="background: #f6f6f6;padding:10px ;text-align: center; color: #0f0c2e;">Solo te falta un paso más para completar tu inscripción.</h2>
+            <p>Tu código de verificación es:</p>
             <p style="width: 80px; margin: 0 auto; font-weight: bold; text-align: center; background: #f6f6f6; border-radius: 5px; font-size: 25px;">${code}</p>
         </div>
     </div>
@@ -101,9 +102,9 @@ exports.generatePasswordResetTemplate = (userName, url) => {
     <div>
         <div style="max-width:620px; margin:0 auto; font-family: Arial, Helvetica, sans-serif; color: #0f0c2e;">
             <h1 style="background: #e27560;padding:10px ;text-align: center; color: #0f0c2e;font-size: 60px;">kinApp</h1>
-            <h1 style="background: #f6f6f6;padding:10px ;text-align: center; color: #0f0c2e;">Hi ${userName},</h1>
-            <p>You recently requested to reset your password for your account. Use link below to reset it.</p>
-            <a href="${url}" style="max-width:500px; margin: 0 auto; font-weight: bold; text-align: center; background: #f6f6f6; border-radius: 5px; font-size: 25px;">Reset your password</a>
+            <h1 style="background: #f6f6f6;padding:10px ;text-align: center; color: #0f0c2e;">Hola ${userName},</h1>
+            <p>Requeriste recientemente reestablecer tu contraseña, haz clik en el enlace de abajo resetearla. </p>
+            <a href="${url}" style="max-width:500px; margin: 0 auto; font-weight: bold; text-align: center; background: #f6f6f6; border-radius: 5px; font-size: 25px;">Reestablecer la contraseña</a>
         </div>
     </div>
     

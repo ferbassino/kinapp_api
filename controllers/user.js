@@ -394,13 +394,13 @@ exports.getUsers = async (request, response) => {
 exports.updateUser = async (req, res) => {
   try {
     const { id } = req.params;
-
     const result = await User.findByIdAndUpdate(
       id,
       {
         mobCode: req.body.mobCode,
         sessionDate: req.body.sessionDate,
         roles: req.body.roles,
+        verified: req.body.verified,
       },
       { new: true }
     );
