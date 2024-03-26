@@ -4,6 +4,26 @@ exports.getStudents = async (req, res) => {
   const students = await Student.find({});
   res.json({ success: true, students: students });
 };
+exports.getStudent = async (request, response) => {
+  const { id } = request.params;
+  try {
+    const student = await Student.findById(id);
+
+    if (student) {
+      response.json({
+        success: true,
+        student,
+      });
+    }
+    if (!student) {
+      console.log(error.message);
+      response.status(400).end();
+    }
+  } catch (error) {
+    console.log(error.message);
+    response.status(400).end();
+  }
+};
 // -----------------update
 exports.updateStudent = async (req, res) => {
   try {
