@@ -36,6 +36,9 @@ const motionTestSchema = new mongoose.Schema({
   kinoveaData: {
     type: Array,
   },
+  videoFrameRate: {
+    type: Number,
+  },
   testTime: {
     type: Number,
   },
