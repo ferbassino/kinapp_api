@@ -39,6 +39,9 @@ const motionTestSchema = new mongoose.Schema({
   videoFrameRate: {
     type: Number,
   },
+  refDistance: {
+    type: Number,
+  },
   testTime: {
     type: Number,
   },
