@@ -2,5 +2,5 @@ POST https://kinapp-api.vercel.app/api/imudata
 Content-Type: application/json
 
 {
-    "name": "reaction-time0"
+    "name": "klino0"
 }

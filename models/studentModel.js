@@ -85,7 +85,7 @@ const studentSchema = new mongoose.Schema({
     type: String,
     default: "2024",
   },
-  condición: {
+  condicion: {
     type: String,
   },
   roles: {

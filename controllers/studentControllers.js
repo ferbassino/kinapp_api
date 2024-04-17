@@ -32,6 +32,13 @@ exports.updateStudent = async (req, res) => {
       id,
       {
         comision: req.body.comision,
+        dni: req.body.dni,
+        ingreso: req.body.ingreso,
+        apellido: req.body.apellido,
+        nombres: req.body.nombres,
+        horarioComision: req.body.horarioComision,
+        cursada: req.body.curdada,
+        roles: req.body.roles,
       },
       { new: true }
     );
