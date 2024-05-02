@@ -43,10 +43,11 @@ const userSchema = new mongoose.Schema({
     type: Object,
     default: { state: "active", name: "example", cellphone: 12345678 },
   },
-  sessionDate: {
+  currentDate: {
     type: Number,
     default: 1708363553024,
   },
+  initialDate: { type: Date, default: Date.now },
   motion: [
     {
       type: mongoose.Schema.Types.ObjectId,
