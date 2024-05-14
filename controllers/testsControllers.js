@@ -26,70 +26,13 @@ exports.getTest = async (req, res) => {
 };
 
 exports.createTest = async (req, res) => {
-  const {
-    email,
-    motionType,
-    segment,
-    side,
-    size,
-    weight,
-    gender,
-    pALevel,
-    age,
-    accX,
-    accY,
-    accZ,
-    accTime,
-    velX,
-    velY,
-    velZ,
-    velTime,
-    magX,
-    magY,
-    magZ,
-    magTime,
-    testTime,
-    dataArray,
-    dataObject,
-    userId,
-    clientId,
-  } = req.body;
-  const user = await User.findById(userId);
-  const client = await Client.findById(clientId);
-  const newTest = new Tests({
-    email,
-    motionType,
-    segment,
-    side,
-    size,
-    weight,
-    gender,
-    pALevel,
-    age,
-    accX,
-    accY,
-    accZ,
-    accTime,
-    velX,
-    velY,
-    velZ,
-    velTime,
-    magX,
-    magY,
-    magZ,
-    magTime,
-    testTime,
-    dataArray,
-    dataObject,
+  const { testObject } = req.body;
+
+  const newTestObject = new Tests({
+    testObject,
   });
 
   try {
-    await newTest.save();
-    user.motion = user.motion.concat(newTest._id);
-    await user.save();
-    client.motion = client.motion.concat(newTest._id);
-
-    await client.save();
     res.status(201).json(newTest);
   } catch (error) {
     console.log("el error de gettests");
@@ -106,4 +49,20 @@ exports.deleteTest = async (req, res) => {
   await Tests.findByIdAndRemove(id);
 
   res.json({ message: "Tests deleted successfully." });
+};
+exports.updateTest = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const result = await Tests.findByIdAndUpdate(
+      id,
+      {
+        testObject,
+      },
+      { new: true }
+    );
+
+    res.json({ updatedTest: result });
+  } catch (error) {
+    console.log(error);
+  }
 };

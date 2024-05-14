@@ -44,10 +44,11 @@ const userSchema = new mongoose.Schema({
     default: { state: "active", name: "example", cellphone: 12345678 },
   },
   currentDate: {
-    type: Number,
+    type: Date,
     default: 1708363553024,
   },
   initialDate: { type: Date, default: Date.now },
+  payday: { type: Date, default: 1708363553024 },
   motion: [
     {
       type: mongoose.Schema.Types.ObjectId,

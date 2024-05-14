@@ -100,9 +100,20 @@ exports.createClient = async (request, response) => {
   try {
     const { email, password, birthDate, size, gender, userId, roles, data } =
       request.body;
-
+    console.log(
+      "bodie",
+      email,
+      password,
+      birthDate,
+      size,
+      gender,
+      userId,
+      roles,
+      data
+    );
     // const passwordHash = await bcrypt.hash(password, 8);
     const user = await User.findById(userId);
+    console.log("user", user);
     // const motion = await MotionTest.findById(motionId);
     const newClient = await Client({
       email,
@@ -115,7 +126,7 @@ exports.createClient = async (request, response) => {
       user: user._id,
       // motion: motion._id,
     });
-
+    console.log("newclient", newClient);
     const savedClient = await newClient.save();
     // motion.client = motion.client.concat(savedClient._id);
     // motion.save();

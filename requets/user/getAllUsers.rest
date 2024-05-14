@@ -1,1 +1,1 @@
-GET  https://kinapp-api.vercel.app/users
+GET  https://kinapp-api.vercel.app/api/user/6612a51fa44e6861db3b88d6
