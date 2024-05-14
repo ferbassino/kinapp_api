@@ -35,6 +35,10 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: "reader",
   },
+  level: {
+    type: String,
+    default: "cero",
+  },
   apps: {
     type: Object,
     default: { translation: true, rotation: false, jump: false },
