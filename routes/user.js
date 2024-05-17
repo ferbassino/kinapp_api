@@ -58,10 +58,13 @@ router.get("/profile", isAuth, (request, response) => {
     success: true,
     userName: request.user.userName,
     email: request.user.email,
-    avatar: request.user.avatar,
     id: request.user._id,
     verified: request.user.verified,
     roles: request.user.roles,
+    level: request.user.level,
+    initialDate: request.user.initialDate,
+    payday: request.user.payday,
+    currentDate: request.user.currentDate,
   });
 });
 
