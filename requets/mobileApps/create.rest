@@ -1,0 +1,8 @@
+POST http://localhost:3001/api/imudata
+Content-Type: application/json
+
+{
+    "name": "jumpe",
+    "version": "0.0.1",
+    "downloads":0
+}

@@ -2,9 +2,8 @@ const { Schema, model } = require("mongoose");
 
 const ImuDataSchema = new Schema({
   name: String,
-  identifier: String,
-  array: Array,
-  object: Object,
+  version: String,
+  downloads: Number,
   date: { type: Date, default: Date.now },
 });
 

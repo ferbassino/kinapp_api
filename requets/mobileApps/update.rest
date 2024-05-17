@@ -1,0 +1,6 @@
+PUT  http://localhost:3001/api/imudata/664761c5e59f61ff53675683
+Content-Type: application/json
+
+{
+    "downloads":10
+}

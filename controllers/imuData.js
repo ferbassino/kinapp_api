@@ -53,13 +53,13 @@ exports.deleteImuData = async (req, res) => {
 
 exports.createImuData = async (request, response) => {
   try {
-    const { name, identifier, array, object } = request.body;
+    const { name, version, downloads } = request.body;
     const newImuData = new ImuData({
       name,
-      identifier,
-      array,
-      object,
+      version,
+      downloads,
     });
+    console.log(newImuData);
     await newImuData.save();
     response.json({
       success: true,
@@ -70,5 +70,25 @@ exports.createImuData = async (request, response) => {
       success: false,
       message: "error saving database",
     });
+  }
+};
+
+exports.updateImuData = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const result = await ImuData.findByIdAndUpdate(
+      id,
+      {
+        name: req.body.name,
+        version: req.body.version,
+        downloads: req.body.downloads,
+      },
+      { new: true }
+    );
+
+    res.json({ updatedImudata: result });
+  } catch (error) {
+    console.log(error);
   }
 };
