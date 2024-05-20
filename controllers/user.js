@@ -20,6 +20,7 @@ const { createRandomBytes } = require("../helper/crypto");
 const { transporter } = require("../helper/mailer");
 
 exports.createUser = async (request, response) => {
+  console.log("entra a create");
   const { userName, email, password } = request.body;
 
   const userEmail = await User.findOne({ email });
@@ -44,13 +45,14 @@ exports.createUser = async (request, response) => {
   //otp generator and verification token
 
   const OTP = generateOtp();
-
+  console.log("genera otp", OTP);
   const verificationToken = new VerificationToken({
     owner: user._id,
     token: OTP,
   });
 
   await verificationToken.save();
+  console.log("genera otp", OTP);
 
   try {
     await transporter.sendMail({
@@ -264,8 +266,8 @@ exports.verifyEmail = async (req, res) => {
       subject: "Welcome email",
 
       html: plainEmailTemplate(
-        "Email verify successfully",
-        "Tanks for connecting with us"
+        "Te damos la bienvenida al ecosistema kinApp",
+        "Tu correo se verificó correctamente"
       ),
     });
   } catch (error) {

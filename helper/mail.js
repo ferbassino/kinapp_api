@@ -42,7 +42,7 @@ exports.generateEmailTemplate = (code) => {
     <div>
         <div style="max-width:620px; margin:0 auto; font-family: Arial, Helvetica, sans-serif; color: #0f0c2e;">
             <h1 style="background: #e27560;padding:10px ;text-align: center; color: #0f0c2e;font-size: 60px;">kinApp</h1>
-            <h1 style="background: #f6f6f6;padding:10px ;text-align: center; color: #0f0c2e;">Te damos la bienvenida al curso de análisis biomecánico del salto verical!</h1>
+            
             <h2 style="background: #f6f6f6;padding:10px ;text-align: center; color: #0f0c2e;">Solo te falta un paso más para completar tu inscripción.</h2>
             <p>Tu código de verificación es:</p>
             <p style="width: 80px; margin: 0 auto; font-weight: bold; text-align: center; background: #f6f6f6; border-radius: 5px; font-size: 25px;">${code}</p>

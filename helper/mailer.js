@@ -6,7 +6,7 @@ try {
     secure: true,
     auth: {
       user: "kinappbiomechanics@gmail.com",
-      pass: "xzdsgvjddyskzecu",
+      pass: "vwrvircbdaunpkin",
     },
   });
 } catch (error) {
