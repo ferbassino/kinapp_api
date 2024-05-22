@@ -14,7 +14,7 @@ const ImuData = require("./models/imuData");
 const mongoose = require("mongoose");
 const anatoUserRouter = require("./routes/anatoUserRouter");
 const studentRouter = require("./routes/studentRoutes");
-
+const productsRouter = require("./routes/products");
 // ------------------
 app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
@@ -41,6 +41,8 @@ app.use(imuDataRouter);
 
 app.use(anatoUserRouter);
 app.use(studentRouter);
+
+app.use(productsRouter);
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
