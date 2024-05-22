@@ -2,6 +2,7 @@ require("dotenv").config();
 const { MercadoPagoConfig, Preference } = require("mercadopago");
 
 const ACCESS_TOKEN = process.env.ACCESS_TOKEN;
+console.log("accestoken", ACCESS_TOKEN);
 const client = new MercadoPagoConfig({
   accessToken: `${ACCESS_TOKEN}`,
 });
