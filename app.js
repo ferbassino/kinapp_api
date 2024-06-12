@@ -6,14 +6,12 @@ const cors = require("cors");
 const userRouter = require("./routes/user");
 const motionRouter = require("./routes/motion");
 const clientRouter = require("./routes/client");
-const postsRouter = require("./routes/posts");
-const testsRouter = require("./routes/tests");
+
 const bodyParser = require("body-parser");
 const imuDataRouter = require("./routes/imuData");
 const ImuData = require("./models/imuData");
 const mongoose = require("mongoose");
-const anatoUserRouter = require("./routes/anatoUserRouter");
-const studentRouter = require("./routes/studentRoutes");
+
 const productsRouter = require("./routes/products");
 // ------------------
 app.use(bodyParser.json({ limit: "30mb", extended: true }));
@@ -35,12 +33,8 @@ app.get("/", (request, response) => {
 app.use(motionRouter);
 app.use(userRouter);
 app.use(clientRouter);
-app.use(postsRouter);
-app.use(testsRouter);
-app.use(imuDataRouter);
 
-app.use(anatoUserRouter);
-app.use(studentRouter);
+app.use(imuDataRouter);
 
 app.use(productsRouter);
 

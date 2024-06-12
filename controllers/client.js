@@ -127,10 +127,8 @@ exports.createClient = async (request, response) => {
     });
     console.log("newclient", newClient);
     const savedClient = await newClient.save();
-
     user.client = user.client.concat(savedClient._id);
     user.save();
-
     response.json({ success: true, savedClient });
   } catch (error) {
     response.json({ success: false, error: error.message });
