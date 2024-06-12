@@ -111,10 +111,10 @@ exports.createClient = async (request, response) => {
       roles,
       data
     );
-    // const passwordHash = await bcrypt.hash(password, 8);
+
     const user = await User.findById(userId);
     console.log("user", user);
-    // const motion = await MotionTest.findById(motionId);
+
     const newClient = await Client({
       email,
       password,
@@ -124,19 +124,12 @@ exports.createClient = async (request, response) => {
       roles,
       data,
       user: user._id,
-      // motion: motion._id,
     });
     console.log("newclient", newClient);
     const savedClient = await newClient.save();
-    // motion.client = motion.client.concat(savedClient._id);
-    // motion.save();
+
     user.client = user.client.concat(savedClient._id);
     user.save();
-    // try {
-    //   await user.save();
-    // } catch (error) {
-    //   console.log(error);
-    // }
 
     response.json({ success: true, savedClient });
   } catch (error) {

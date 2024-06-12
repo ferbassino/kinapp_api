@@ -2,5 +2,7 @@ POST https://kinapp-api.vercel.app/api/imudata
 Content-Type: application/json
 
 {
-    "name": "klino0"
+    "name": "klino0",
+    "version":"0.0.1",
+    "downloads":0
 }

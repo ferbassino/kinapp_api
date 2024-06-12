@@ -1,8 +1,9 @@
 require("dotenv").config();
+const { response } = require("express");
 const { MercadoPagoConfig, Preference } = require("mercadopago");
 
 const ACCESS_TOKEN = process.env.ACCESS_TOKEN;
-console.log("accestoken", ACCESS_TOKEN);
+
 const client = new MercadoPagoConfig({
   accessToken: `${ACCESS_TOKEN}`,
 });
@@ -35,4 +36,9 @@ exports.createPreference = async (req, res) => {
       error: "error al crear preferencia",
     });
   }
+};
+exports.getPayments = async (req, res) => {
+  const { topic, id } = req.query;
+  console.log("request", req.query);
+  res.json({ success: true });
 };

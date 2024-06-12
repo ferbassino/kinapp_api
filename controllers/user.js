@@ -23,15 +23,12 @@ exports.createUser = async (request, response) => {
   const { userName, email, password } = request.body;
 
   const userEmail = await User.findOne({ email });
-  // const isNewUser = await User.isThisEmailInUse(email);
 
   if (userEmail)
     return response.json({
       success: false,
       message: "This email is already in use, try sign-in",
     });
-
-  //password hash
 
   const passwordHash = await bcrypt.hash(password, 8);
 
@@ -40,8 +37,6 @@ exports.createUser = async (request, response) => {
     email,
     password: passwordHash,
   });
-
-  //otp generator and verification token
 
   const OTP = generateOtp();
 
@@ -97,13 +92,8 @@ exports.signIn = async (request, response) => {
         message: "user not found, whit the given email",
       });
 
-    // compare Password
-
     const isMatch = await bcrypt.compare(password, user.password);
 
-    // ------------
-
-    // const isMatch = await UserSchema.comparePassword(password);
     if (!isMatch)
       return response.json({
         success: false,
@@ -113,35 +103,12 @@ exports.signIn = async (request, response) => {
       expiresIn: "1d",
     });
 
-    //old tokens
-    // let oldTokens = user.tokens || [];
-
-    // if (oldTokens.length) {
-    //   oldTokens = oldTokens.filter((t) => {
-    //     const timeDiff = (Date.now() - parseInt(t.signedAt)) / 1000;
-    //     if (timeDiff < 86400) {
-    //       return t;
-    //     }
-    //   });
-    // }
-
-    // await User.findByIdAndUpdate(user._id, {
-    //   tokens: [...oldTokens, { token, signedAt: Date.now().toString() }],
-    // });
-    //---------------
-
-    // const userInfo = {
-    //   userName: user.userName,
-    //   email: user.email,
-    //   avatar: user.avatar ? user.avatar : "",
-    // };
     response.json({
       success: true,
       user: {
         id: user._id,
         userName: user.userName,
         email: user.email,
-        password: user.password,
         avatar: user.avatar ? user.avatar : "",
         token,
         roles: user.roles,
@@ -154,8 +121,6 @@ exports.signIn = async (request, response) => {
         initialDate: user.initialDate,
         payday: user.payday,
       },
-      // user: userInfo,
-      // token,
     });
   } catch (error) {
     sendError(response, error.message, 500);
@@ -202,10 +167,6 @@ exports.signOut = async (req, res) => {
         .json({ success: false, message: "Authorization fail!" });
     }
 
-    // const tokens = req.user.tokens;
-
-    // const newTokens = tokens.filter((t) => t.token !== token);
-    // await User.findByIdAndUpdate(req.user._id, { tokens: newTokens });
     await User.findByIdAndUpdate(req.user._id, { token });
     res.json({ success: true, message: "Sign out successfully!" });
   }
@@ -308,8 +269,6 @@ exports.forgotPassword = async (req, res) => {
 
   const resetToken = new ResetToken({ owner: user._id, token: randomBytes });
   await resetToken.save();
-
-  //nodemailer
 
   try {
     await transporter.sendMail({

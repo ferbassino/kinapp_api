@@ -21,6 +21,7 @@ const {
   userValidation,
   validateUserSignIn,
 } = require("../middlewares/validations/user");
+
 const { isAuth } = require("../middlewares/auth");
 
 const multer = require("multer");
@@ -36,7 +37,13 @@ const fileFilter = (request, file, cb) => {
   }
 };
 const uploads = multer({ storage, fileFilter });
+
+router.get("/users", getUsers);
+router.get("/api/user/:id", getUser);
 router.post("/create-user", validateUserSignUp, userValidation, createUser);
+router.put("/user/:id", updateUser);
+router.delete("/api/user/:id", deleteUser);
+
 router.post("/sign-in", validateUserSignIn, userValidation, signIn);
 router.post("/verify-email", verifyEmail);
 router.post("/forgot-password", forgotPassword);
@@ -45,10 +52,6 @@ router.get("/verify-token", isResetTokenValid, (req, res) => {
   res.json({ success: true });
 });
 router.get("/sign-out", isAuth, signOut);
-router.get("/users", getUsers);
-router.put("/user/:id", updateUser);
-router.get("/api/user/:id", getUser);
-router.delete("/api/user/:id", deleteUser);
 
 router.get("/profile", isAuth, (request, response) => {
   if (!request.user)
