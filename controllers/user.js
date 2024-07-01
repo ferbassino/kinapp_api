@@ -375,6 +375,21 @@ exports.updateUser = async (req, res) => {
     console.log(error);
   }
 };
+exports.updateUserCourses = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const result = await User.findByIdAndUpdate(
+      id,
+      {
+        $push: { courses: { $each: req.body.courses } },
+      },
+      { new: true }
+    );
+    res.json({ success: true, updatedUser: result });
+  } catch (error) {
+    console.log(error);
+  }
+};
 exports.getUser = async (request, response) => {
   const { id } = request.params;
   try {

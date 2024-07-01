@@ -31,11 +31,10 @@ app.get("/", (request, response) => {
 });
 
 app.use(motionRouter);
+
 app.use(userRouter);
 app.use(clientRouter);
-
 app.use(imuDataRouter);
-
 app.use(productsRouter);
 
 const PORT = process.env.PORT || 3001;

@@ -14,6 +14,7 @@ const {
   updateUser,
   getUser,
   deleteUser,
+  updateUserCourses,
 } = require("../controllers/user");
 
 const {
@@ -43,7 +44,7 @@ router.get("/api/user/:id", getUser);
 router.post("/create-user", validateUserSignUp, userValidation, createUser);
 router.put("/user/:id", updateUser);
 router.delete("/api/user/:id", deleteUser);
-
+router.put("/user-courses/:id", updateUserCourses);
 router.post("/sign-in", validateUserSignIn, userValidation, signIn);
 router.post("/verify-email", verifyEmail);
 router.post("/forgot-password", forgotPassword);
