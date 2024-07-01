@@ -73,6 +73,7 @@ exports.createUser = async (request, response) => {
       object: user.apps,
       data: user.data,
       mobCode: user.mobCode,
+      courses: user.courses,
     },
   });
 };
@@ -120,6 +121,7 @@ exports.signIn = async (request, response) => {
         currentDate: user.currentDate,
         initialDate: user.initialDate,
         payday: user.payday,
+        courses: user.courses,
       },
     });
   } catch (error) {
@@ -364,6 +366,7 @@ exports.updateUser = async (req, res) => {
         sessionDate: req.body.sessionDate,
         roles: req.body.roles,
         verified: req.body.verified,
+        courses: req.body.courses,
       },
       { new: true }
     );

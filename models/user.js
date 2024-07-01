@@ -47,6 +47,10 @@ const userSchema = new mongoose.Schema({
     type: Object,
     default: { state: "active", name: "example", cellphone: 12345678 },
   },
+  courses: {
+    type: Array,
+    default: ["example"],
+  },
   currentDate: {
     type: Date,
     default: 1708363553024,
