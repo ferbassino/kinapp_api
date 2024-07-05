@@ -1,7 +1,10 @@
 const router = require("express").Router();
-const { createPreference, getPayments } = require("../controllers/products");
+const {
+  createPreference,
+  getNotifications,
+} = require("../controllers/products");
 
 router.post("/create_preference", createPreference);
-router.get("/payment", getPayments);
+router.post("/webhook", getNotifications);
 
 module.exports = router;

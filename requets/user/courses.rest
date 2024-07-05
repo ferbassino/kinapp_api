@@ -1,0 +1,31 @@
+PUT     http://localhost:3001/create-user-courses/6682adaa0d71a473677938f1
+Content-Type: application/json
+
+{
+    "courses": [
+        {
+            "id":"4",
+            "name":"video",
+            "active":true,
+            "state":"active",
+            "duration":2628000000,
+            "initialDay":1719918244489,
+            "finalDay":1722546244489,
+            "score":10
+        }
+    ]
+}
+###
+PUT     http://localhost:3001/update-user-courses/6682adaa0d71a473677938f1
+Content-Type: application/json
+
+{
+    
+    "id":"1",
+    "name":"video",
+    "state":"inactive",
+    "duration":2628000000,
+    "initialDay":1719918244489,
+    "finalDay":1722546244489,
+    "score":6
+}

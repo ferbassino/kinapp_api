@@ -38,8 +38,9 @@ exports.createPreference = async (req, res) => {
     });
   }
 };
-exports.getPayments = async (req, res) => {
-  const { topic, id } = req.query;
-  console.log("request", req.query);
-  res.json({ success: true });
+exports.getNotifications = async (req, res) => {
+  const notification = req.body;
+  console.log("Received notification:", notification);
+  // Procesa la notificación aquí
+  res.status(200).send("Notification received");
 };

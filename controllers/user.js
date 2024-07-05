@@ -375,7 +375,8 @@ exports.updateUser = async (req, res) => {
     console.log(error);
   }
 };
-exports.updateUserCourses = async (req, res) => {
+
+exports.creteUserCourses = async (req, res) => {
   try {
     const { id } = req.params;
     const result = await User.findByIdAndUpdate(
@@ -385,11 +386,32 @@ exports.updateUserCourses = async (req, res) => {
       },
       { new: true }
     );
-    res.json({ success: true, updatedUser: result });
+    res.json({ success: true, createdUserCourse: result });
   } catch (error) {
     console.log(error);
   }
 };
+exports.updateUserCourses = async (req, res) => {
+  try {
+    const response = await User.updateOne(
+      { _id: req.params.id, "courses.id": req.body.id },
+      {
+        $set: {
+          "courses.$.name": req.body.name,
+          "courses.$.state": req.body.state,
+          "courses.$.duration": req.body.duration,
+          "courses.$.initialDay": req.body.initialDay,
+          "courses.$.finalDay": req.body.finalDay,
+          "courses.$.score": req.body.score,
+        },
+      }
+    );
+    res.json({ success: true, updatedUserCourse: response });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 exports.getUser = async (request, response) => {
   const { id } = request.params;
   try {

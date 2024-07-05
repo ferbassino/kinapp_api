@@ -49,7 +49,18 @@ const userSchema = new mongoose.Schema({
   },
   courses: {
     type: Array,
-    default: ["example"],
+    default: [
+      {
+        id: "0",
+        name: "example",
+        active: true,
+        state: "active",
+        duration: 2628000000,
+        initialDay: 1719918244489,
+        finalDay: 1722546244489,
+        score: 10,
+      },
+    ],
   },
   currentDate: {
     type: Date,

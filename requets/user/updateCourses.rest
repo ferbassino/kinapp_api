@@ -1,6 +1,0 @@
-PUT     http://localhost:3001/user-courses/6682adaa0d71a473677938f1
-Content-Type: application/json
-
-{
-    "courses": ["zaraza"]
-}
