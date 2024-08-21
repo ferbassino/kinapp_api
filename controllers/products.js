@@ -38,6 +38,7 @@ exports.createPreference = async (req, res) => {
     });
   }
 };
+
 exports.getNotifications = async (req, res) => {
   const notification = req.body;
   console.log("Received notification:", notification);

@@ -11,15 +11,12 @@ const clientSchema = new mongoose.Schema({
   },
   birthDate: {
     type: String,
-    required: true,
   },
   size: {
     type: Number,
-    required: true,
   },
   gender: {
     type: String,
-    required: true,
   },
   roles: {
     type: String,
