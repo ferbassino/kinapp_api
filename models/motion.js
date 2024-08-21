@@ -69,6 +69,9 @@ const motionTestSchema = new mongoose.Schema({
   mFComponents: {
     type: String,
   },
+  jumpNumber: {
+    type: Number,
+  },
   date: { type: Date, default: Date.now },
   userId: [
     {

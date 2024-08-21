@@ -65,6 +65,7 @@ exports.createMotionTest = async (request, response) => {
       pALevel,
       mPActivity,
       mFComponents,
+      jumpNumber,
       age,
       userId,
       clientId,
@@ -93,6 +94,7 @@ exports.createMotionTest = async (request, response) => {
       pALevel,
       mPActivity,
       mFComponents,
+      jumpNumber,
       age,
       userId: user._id,
       clientId: client._id,
@@ -119,6 +121,7 @@ exports.updateMotion = async (req, res) => {
       id,
       {
         opposite: req.body.opposite,
+        jumpNumber: req.body.jumpNumber,
       },
       { new: true }
     );
