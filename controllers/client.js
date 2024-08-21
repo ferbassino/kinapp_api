@@ -98,10 +98,7 @@ exports.signInClient = async (request, response) => {
 
 exports.createClient = async (request, response) => {
   try {
-    const { email, password, birthDate, size, gender, userId, roles, data } =
-      request.body;
-    console.log(
-      "bodie",
+    const {
       email,
       password,
       birthDate,
@@ -109,8 +106,9 @@ exports.createClient = async (request, response) => {
       gender,
       userId,
       roles,
-      data
-    );
+      data,
+      cMJValidateNumbers,
+    } = request.body;
 
     const user = await User.findById(userId);
     console.log("user", user);
@@ -123,9 +121,10 @@ exports.createClient = async (request, response) => {
       gender,
       roles,
       data,
+      cMJValidateNumbers,
       user: user._id,
     });
-    console.log("newclient", newClient);
+
     const savedClient = await newClient.save();
     user.client = user.client.concat(savedClient._id);
     user.save();
@@ -156,6 +155,7 @@ exports.updateClient = async (req, res) => {
         size: req.body.size,
         gender: req.body.gender,
         roles: req.body.roles,
+        cMJValidateNumbers: req.body.cMJValidateNumbers,
       },
       { new: true }
     );

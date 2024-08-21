@@ -26,6 +26,9 @@ const clientSchema = new mongoose.Schema({
     type: Object,
   },
   date: { type: Date, default: Date.now },
+  cMJValidateNumbers: {
+    type: Number,
+  },
   user: [
     {
       type: mongoose.Schema.Types.ObjectId,
