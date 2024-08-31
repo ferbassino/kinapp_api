@@ -10,7 +10,8 @@ exports.validateUserSignUp = [
     .withMessage("Must be a valid name!")
     .isLength({ min: 3, max: 20 })
     .withMessage("username must be within 3 to 20 character!"),
-  check("email").normalizeEmail().isEmail().withMessage("Invalid email!"),
+  check("email").isEmail().withMessage("Invalid email!"),
+  // check("email").normalizeEmail().isEmail().withMessage("Invalid email!"),
   check("password")
     .trim()
     .not()
@@ -31,6 +32,7 @@ exports.validateUserSignUp = [
 ];
 exports.userValidation = (req, res, next) => {
   const result = validationResult(req).array();
+
   if (!result.length) return next();
 
   const error = result[0].msg;
