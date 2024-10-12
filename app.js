@@ -28,7 +28,7 @@ app.use(
 );
 
 app.get("/", (request, response) => {
-  response.json({ success: true, message: "welcome to backend..." });
+  response.json({ success: true, message: "welcome to backend" });
 });
 
 app.use(motionRouter);

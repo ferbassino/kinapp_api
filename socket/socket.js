@@ -19,6 +19,7 @@ const initializeSocket = (server) => {
 
     // Escuchar eventos personalizados
     socket.on("sensorData", (data) => {
+      //   console.log("Datos recibidos del cliente:", data);
       // Emitir los datos recibidos a todos los clientes conectados
       customNamespace.emit("sensorData", data);
     });
