@@ -4,7 +4,7 @@ const { Server } = require("socket.io");
 const initializeSocket = (server) => {
   const io = new Server(server, {
     cors: {
-      origin: "https://kinappweb.vercel.app", // Permite el dominio de tu front-end
+      origin: "*", // Permitir todos los dominios en desarrollo
       methods: ["GET", "POST"],
     },
     path: "/my-custom-socket-path", // Asigna un path específico para el socket
