@@ -39,7 +39,7 @@ app.use(productsRouter);
 
 // socket---------------------------
 // Crear servidor HTTP
-// const server = http.createServer(app);
+const server = http.createServer(app);
 // initializeSocket(server);
 
 const PORT = process.env.PORT || 3001;
