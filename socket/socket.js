@@ -12,12 +12,22 @@ const initializeSocket = (server) => {
   const customNamespace = "/custom-socket";
 
   server.on("request", (req, res) => {
+    // Manejo de las cabeceras CORS
+    res.setHeader("Access-Control-Allow-Origin", "*"); // Permitir todas las solicitudes
+    res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+
+    if (req.method === "OPTIONS") {
+      res.writeHead(204);
+      res.end();
+      return;
+    }
+
     if (req.url.startsWith(customNamespace)) {
       let body = "";
       req.on("data", (chunk) => {
         body += chunk;
       });
-
       req.on("end", () => {
         try {
           const parsedData = JSON.parse(body);
