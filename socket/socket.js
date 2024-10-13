@@ -1,11 +1,19 @@
 const { Server } = require("socket.io");
 
 const initializeSocket = (server) => {
+  // const io = new Server(server, {
+  //   cors: {
+  //     origin: "*",
+  //     methods: ["GET", "POST"],
+  //   },
+  // });
   const io = new Server(server, {
+    wssEngine: ["ws", "wss"],
+    transports: ["websocket", "polling"],
     cors: {
       origin: "*", // Permitir todos los dominios en desarrollo
-      methods: ["GET", "POST"],
     },
+    allowEIO3: true,
   });
 
   // Usar un namespace para que el socket solo se conecte en una ruta específica

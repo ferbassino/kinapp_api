@@ -40,10 +40,10 @@ app.use(productsRouter);
 
 // socket---------------------------
 // Crear servidor HTTP
-// const server = http.createServer(app);
-// initializeSocket(server);
+const server = http.createServer(app);
+initializeSocket(server);
 
 const PORT = process.env.PORT || 3001;
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`listening on port: ${PORT}`);
 });
