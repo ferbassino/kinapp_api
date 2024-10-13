@@ -32,7 +32,6 @@ app.get("/", (request, response) => {
 });
 
 app.use(motionRouter);
-
 app.use(userRouter);
 app.use(clientRouter);
 app.use(imuDataRouter);
@@ -40,8 +39,8 @@ app.use(productsRouter);
 
 // socket---------------------------
 // Crear servidor HTTP
-const server = http.createServer(app);
-initializeSocket(server);
+// const server = http.createServer(app);
+// initializeSocket(server);
 
 const PORT = process.env.PORT || 3001;
 server.listen(PORT, () => {
