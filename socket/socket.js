@@ -1,47 +1,50 @@
-const { Server } = require("socket.io");
+const Pusher = require("pusher");
+
+const pusher = new Pusher({
+  appId: "1879458",
+  key: "bc602f832f2027c631c0",
+  secret: "d6ac30677cce08613479",
+  cluster: "sa1",
+  useTLS: true,
+});
 
 const initializeSocket = (server) => {
-  // const io = new Server(server, {
-  //   cors: {
-  //     origin: "*",
-  //     methods: ["GET", "POST"],
-  //   },
-  // });
-  const io = new Server(server, {
-    wssEngine: ["ws", "wss"],
-    transports: ["websocket", "polling"],
-    cors: {
-      origin: "*", // Permitir todos los dominios en desarrollo
-    },
-    allowEIO3: true,
-  });
-  io.engine.on("connection_error", (err) => {
-    console.log(err.req); // the request object
-    console.log(err.code); // the error code, for example 1
-    console.log(err.message); // the error message, for example "Session ID unknown"
-    console.log(err.context); // some additional error context
-  });
+  const customNamespace = "/custom-socket";
 
-  // Usar un namespace para que el socket solo se conecte en una ruta específica
-  const customNamespace = io.of("/custom-socket");
+  server.on("request", (req, res) => {
+    if (req.url.startsWith(customNamespace)) {
+      let body = "";
+      req.on("data", (chunk) => {
+        body += chunk;
+      });
 
-  customNamespace.on("connection", (socket) => {
-    console.log("Cliente conectado al namespace custom-socket:", socket.id);
-
-    socket.on("sensorData", (data) => {
-      console.log("Datos recibidos del cliente:", data);
-      customNamespace.emit("sensorData", data);
-    });
-
-    socket.on("disconnect", () => {
-      console.log(
-        "Cliente desconectado del namespace custom-socket:",
-        socket.id
-      );
-    });
+      req.on("end", () => {
+        try {
+          const parsedData = JSON.parse(body);
+          console.log("Datos recibidos del cliente:", parsedData);
+          // Emitir los datos recibidos a todos los clientes conectados
+          pusher.trigger(
+            "sensor-channel",
+            "sensor-event",
+            parsedData,
+            (error) => {
+              if (error) {
+                console.error("Error al enviar datos a Pusher:", error);
+              }
+            }
+          );
+          res.writeHead(200, { "Content-Type": "text/plain" });
+          res.end("Datos recibidos");
+        } catch (error) {
+          console.error("Error al procesar los datos recibidos:", error);
+          res.writeHead(400, { "Content-Type": "text/plain" });
+          res.end("Datos inválidos");
+        }
+      });
+    }
   });
 
-  return io;
+  return server;
 };
 
 module.exports = initializeSocket;
