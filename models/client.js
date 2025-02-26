@@ -5,10 +5,28 @@ const clientSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  password: {
+  name: {
     type: String,
     required: true,
   },
+  surname: {
+    type: String,
+    required: true,
+  },
+  cellPhone: {
+    type: String,
+    required: true,
+  },
+
+  password: {
+    type: String,
+  },
+  avatar: String,
+  appointments: [{ type: mongoose.Schema.Types.ObjectId, ref: "Appointment" }],
+  sessionsHistory: { type: Array },
+  personalData: { type: Object },
+  personalHistory: { type: Object },
+  familyHistory: { type: Array },
   birthDate: {
     type: String,
   },
@@ -29,16 +47,22 @@ const clientSchema = new mongoose.Schema({
   cMJValidateNumbers: {
     type: Number,
   },
-  user: [
+  userId: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     },
   ],
-  motion: [
+  motionId: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Tests",
+      ref: "Motion",
+    },
+  ],
+  adminId: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
     },
   ],
 });

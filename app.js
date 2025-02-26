@@ -13,6 +13,7 @@ const imuDataRouter = require("./routes/imuData");
 const ImuData = require("./models/imuData");
 const mongoose = require("mongoose");
 const productsRouter = require("./routes/products");
+const appointmentRoutes = require("./routes/appointments");
 
 // ------------------
 app.use(bodyParser.json({ limit: "30mb", extended: true }));
@@ -36,6 +37,7 @@ app.use(userRouter);
 app.use(clientRouter);
 app.use(imuDataRouter);
 app.use(productsRouter);
+app.use(appointmentRoutes);
 
 // socket---------------------------
 // Crear servidor HTTP
@@ -44,5 +46,5 @@ const server = http.createServer(app);
 
 const PORT = process.env.PORT || 3001;
 server.listen(PORT, () => {
-  console.log(`listening on port: ${PORT}`);
+  console.log(`listening http://localhost:${PORT}`);
 });

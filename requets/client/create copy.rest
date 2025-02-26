@@ -1,0 +1,117 @@
+POST http://localhost:3001/api/client/create
+Content-Type: application/json
+
+{
+    "email":"televisor@gmail.com",
+    "password":"0OwViH47",
+    "sessionsHistory": [
+    {
+      "id": 1,
+      "diagnostic": "tendinitis rotuliana",
+      "start": "10/01/2024",
+      "end": "10/01/2024",
+      "active": true,
+      "currentCondition": {
+        "mainComplaint": "shoulder pain",
+        "painCharacteristics": {
+          "onset": "suden",
+          "duration": "2 weeks",
+          "type": "burning",
+          "intensity": 0,
+          "location": "left knee",
+          "aggravatingFactors": ["Running", "Stairs"],
+          "relievingFactors": ["rest"]
+        },
+        "associatedSymptoms": ["Swelling", "Bruising"],
+        "functionalLimitations": ["Difficulty walking", "Limited range of motion"]
+      },
+      "lifestyle": {
+        "physicalActivity": {
+          "type": "Running",
+          "frequency": "3 times a week",
+          "intensity": "Moderate"
+        },
+        "smoking": {
+          "status": false,
+          "frequency": "10 cigarettes per day"
+        },
+        "alcoholConsumption": {
+          "status": false,
+          "frequency": ""
+        },
+        "diet": "Balanced",
+        "sleep": {
+          "hoursPerNight": 0,
+          "quality": "Interrupted"
+        }
+      },
+      
+      "sessions": [
+        {
+          "number": 1,
+          "date": "Aqui va la fecha que se seleccionó",
+          "hour": "Aqui va la hora que se seleccionó",
+          "done":"false",
+          "dailyReview": {},
+          "warmUp": ["aqui va lo que se guardó en warmUp"],
+          "workOut": ["aqui va lo que se guardó en workOut"],
+          "coolDown":["aqui va lo que se guardó en coolDown"]
+        }
+      ]
+    }
+  ],
+  "personalData": {
+    "oS": "femeba",
+    "nOS": "4092790578",
+    "address": "El payador",
+    "addressNumber": "1234",
+    "dToPiso": "2",
+    "dto": "a",
+    "localidad": "villa bosch",
+    "provincia": "Buenos Aires",
+    "pais": "arentina",
+    "cP": "1682",
+    "fechaNacimiento": "23-4-56",
+    "edad": "68",
+    "dni": "34564456",
+    "profesion": "striper",
+    "profDerivante": "doctor petroca",
+    "matPrfDeriv": "mn34567",
+    "peso": "90",
+    "talla": "170"
+  },
+  "personalHistory": {
+    "medicalConditions": [
+      { "name": "diabetes", "observations": "", "date": "" }
+    ],
+    "medications": [
+      { "name": "diabetes", "observations": "", "date": "" }
+    ],
+    "allergies": [{ "name": "diabetes", "observations": "", "date": "" }],
+    "previousInjuries": [{ "name": "esguince de tobillo", "observations": "", "date": "" }],
+    "surgeries": [
+      { "id": 1, "name": "tendinitis rotuliana", "date": "", "observations": "" }
+    ]
+  },
+  "familyHistory": [
+    {
+      "relationship": "father",
+      "disease": ["patologia 1", "patologia 2"]
+    },
+    {
+      "relationship": "mather",
+      "disease": ["patologia 1", "patologia 2"]
+    }
+  ],
+    "birthDate":50,
+    "weight":80,
+    "size":170,
+    "gender":"female",
+    "pALevel":"low",
+    "userId":"65fdd605d47aad0cb6c15314",
+    "roles":"bronze",
+    "data":{
+        "name":"",
+        "surname":""
+    }
+}

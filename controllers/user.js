@@ -78,6 +78,93 @@ exports.createUser = async (request, response) => {
   });
 };
 
+exports.resendUserCode = async (request, response) => {
+  const { userId, email } = request.body;
+
+  if (!userId || !email) {
+    return response.status(400).json({
+      success: false,
+      error: "Faltan parámetros requeridos: userId o email",
+    });
+  }
+
+  try {
+    // Buscar usuario por userId
+    const user = await User.findById(userId);
+    if (!user) {
+      return response.status(404).json({
+        success: false,
+        error: "Usuario no encontrado",
+      });
+    }
+
+    // Verificar si el email coincide con el del usuario
+    if (user.email !== email) {
+      return response.status(400).json({
+        success: false,
+        error:
+          "El email proporcionado no coincide con el registrado para este usuario",
+      });
+    }
+
+    // Eliminar el token anterior si existe
+    const existingToken = await VerificationToken.findOne({ owner: user._id });
+    if (existingToken) {
+      await VerificationToken.findByIdAndDelete(existingToken._id);
+    }
+
+    // Generar nuevo código OTP
+    const OTP = generateOtp();
+
+    // Crear y guardar un nuevo token de verificación
+    const verificationToken = new VerificationToken({
+      owner: user._id,
+      token: OTP,
+    });
+
+    await verificationToken.save();
+
+    // Enviar el correo con el código OTP
+    try {
+      await transporter.sendMail({
+        from: "kinappbiomechanics@gmail.com",
+        to: user.email,
+        subject: "Verifica tu cuenta de correo",
+        html: generateEmailTemplate(OTP),
+      });
+    } catch (emailError) {
+      console.error("Error al enviar el correo:", emailError);
+      return response.status(500).json({
+        success: false,
+        error: "Hubo un error al enviar el correo de verificación",
+      });
+    }
+
+    // Devolver una respuesta exitosa
+    return response.json({
+      success: true,
+      user: {
+        userName: user.userName,
+        email: user.email,
+        id: user._id,
+        avatar: user.avatar || "",
+        verified: user.verified,
+        roles: user.roles,
+        object: user.apps,
+        data: user.data,
+        mobCode: user.mobCode,
+        courses: user.courses,
+      },
+    });
+  } catch (error) {
+    console.error("Error en resendUserCode:", error);
+    return response.status(500).json({
+      success: false,
+      error: "Hubo un error en el servidor. Intenta nuevamente más tarde",
+    });
+  }
+};
+
 exports.signIn = async (request, response) => {
   try {
     const { email, password } = request.body;
@@ -415,7 +502,7 @@ exports.updateUserCourses = async (req, res) => {
 exports.getUser = async (request, response) => {
   const { id } = request.params;
   try {
-    const user = await User.findById(id);
+    const user = await User.findById(id).populate("clients").populate("motion");
 
     if (user) {
       response.json({

@@ -47,3 +47,14 @@ exports.validateUserSignIn = [
     .isEmpty()
     .withMessage("email / password is required!"),
 ];
+
+exports.isAdmin = (req, res, next) => {
+  if (req.user && req.user.roles === "admin") {
+    next(); // El usuario es administrador, continuar
+  } else {
+    res.status(403).json({
+      success: false,
+      message: "Acceso denegado. Se requiere rol de administrador.",
+    });
+  }
+};

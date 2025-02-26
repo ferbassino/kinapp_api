@@ -1,0 +1,10 @@
+POST http://localhost:3000/api/admin/users
+Content-Type: application/json
+
+{
+    "userName": "adri",
+    "email": "adri.adrian@gmail.com",
+    "password": "12345678",
+    "confirmPassword": "12345678",
+    "roles": "admin"
+}

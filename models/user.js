@@ -68,16 +68,22 @@ const userSchema = new mongoose.Schema({
   },
   initialDate: { type: Date, default: Date.now },
   payday: { type: Date, default: 1708363553024 },
-  motion: [
+  motionId: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Tests",
+      ref: "Motion",
     },
   ],
-  client: [
+  clientId: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Client",
+    },
+  ],
+  userId: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User", // Referencia al mismo modelo "User"
     },
   ],
   // tokens: [{ type: Object }],

@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const motionTestSchema = new mongoose.Schema({
+const motionSchema = new mongoose.Schema({
   email: {
     type: String,
   },
@@ -23,6 +23,9 @@ const motionTestSchema = new mongoose.Schema({
   },
   motion: {
     type: String,
+  },
+  values: {
+    type: Object,
   },
   accData: {
     type: Array,
@@ -72,6 +75,8 @@ const motionTestSchema = new mongoose.Schema({
   jumpNumber: {
     type: Number,
   },
+  dataObj: { type: mongoose.Schema.Types.Mixed },
+  dataArr: [{ type: mongoose.Schema.Types.Mixed }],
   date: { type: Date, default: Date.now },
   userId: [
     {
@@ -85,6 +90,12 @@ const motionTestSchema = new mongoose.Schema({
       ref: "Client",
     },
   ],
+  adminId: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
+  ],
 });
 
-module.exports = mongoose.model("MotionTest", motionTestSchema);
+module.exports = mongoose.model("Motion", motionSchema);

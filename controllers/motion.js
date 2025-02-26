@@ -20,21 +20,24 @@ exports.getMotionTests = async (request, response) => {
     console.log(error.message);
   }
 };
+
 exports.getMotionTest = async (request, response) => {
   const { id } = request.params;
+
   try {
-    const motionTest = await MotionTest.findById(id);
+    const motionTest = await MotionTest.findById(id)
+      .populate("user")
+      .populate("client");
 
     if (motionTest) {
-      response.json({
+      return response.json({
         success: true,
         motionTest,
       });
     }
-    if (!motionTest) {
-      console.log(error.message);
-      response.status(400).end();
-    }
+
+    console.log("MotionTest not found");
+    response.status(400).end();
   } catch (error) {
     console.log(error.message);
     response.status(400).end();
@@ -51,6 +54,7 @@ exports.createMotionTest = async (request, response) => {
       side,
       opposite,
       motion,
+      values,
       accData,
       gyroData,
       magData,
@@ -65,8 +69,9 @@ exports.createMotionTest = async (request, response) => {
       pALevel,
       mPActivity,
       mFComponents,
-
       age,
+      dataArr,
+      dataObj,
       userId,
       clientId,
     } = request.body;
@@ -80,6 +85,7 @@ exports.createMotionTest = async (request, response) => {
       side,
       opposite,
       motion,
+      values,
       accData,
       gyroData,
       magData,
@@ -94,16 +100,17 @@ exports.createMotionTest = async (request, response) => {
       pALevel,
       mPActivity,
       mFComponents,
-
       age,
+      dataArr,
+      dataObj,
       userId: user._id,
       clientId: client._id,
     });
 
     const savedMotionTest = await motionTest.save();
-    user.motion = user.motion.concat(savedMotionTest._id);
+    user.motionId = user.motionId.concat(savedMotionTest._id);
     await user.save();
-    client.motion = client.motion.concat(savedMotionTest._id);
+    client.motionId = client.motionId.concat(savedMotionTest._id);
 
     await client.save();
 

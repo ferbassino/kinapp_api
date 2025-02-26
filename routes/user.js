@@ -16,12 +16,14 @@ const {
   deleteUser,
   creteUserCourses,
   updateUserCourses,
+  resendUserCode,
 } = require("../controllers/user");
 
 const {
   validateUserSignUp,
   userValidation,
   validateUserSignIn,
+  isAdmin,
 } = require("../middlewares/validations/user");
 
 const { isAuth } = require("../middlewares/auth");
@@ -43,6 +45,8 @@ const uploads = multer({ storage, fileFilter });
 router.get("/users", getUsers);
 router.get("/api/user/:id", getUser);
 router.post("/create-user", validateUserSignUp, userValidation, createUser);
+router.post("/api/user/resend-code", resendUserCode);
+
 router.put("/user/:id", updateUser);
 router.delete("/api/user/:id", deleteUser);
 router.put("/create-user-courses/:id", creteUserCourses);
@@ -83,4 +87,11 @@ router.post(
 
 router.get("/users", getAllUsers);
 
+// Rutas para administradores
+
+router.post("/api/admin/users", createUser); // Crear un nuevo usuario
+router.put("/api/admin/users/:id", isAuth, isAdmin, updateUser); // Actualizar un usuario
+router.delete("/api/admin/users/:id", isAuth, isAdmin, deleteUser); // Eliminar un usuario
+router.get("/api/admin/users", isAuth, isAdmin, getUsers); // Obtener todos los usuarios
+router.get("/api/admin/users/:id", isAuth, isAdmin, getUser); // Obtener un usuario específico
 module.exports = router;
