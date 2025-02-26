@@ -735,27 +735,3 @@ exports.addDailyReview = async (req, res) => {
     return res.status(500).json({ message: "Error del servidor." });
   }
 };
-
-exports.sendEmailNotification = async (req, res) => {
-  const { full_name, email, appointmentDate, appointmentTime } = req.body;
-
-  if (!full_name || !email || !appointmentDate || !appointmentTime) {
-    return res
-      .status(400)
-      .json({ message: "Faltan datos para enviar el correo." });
-  }
-
-  try {
-    await transporter.sendMail({
-      from: "<kinappbiomechanics@gmail.com>", // sender address
-      to: email, //
-      subject: "Detalles de tu turno",
-      text: `Hola ${full_name},\n\nTu turno ha sido programado con éxito:\nFecha: ${appointmentDate}\nHora: ${appointmentTime}\n\nGracias por elegirnos.`,
-    });
-
-    res.status(200).json({ message: "Correo enviado exitosamente." });
-  } catch (error) {
-    console.error("Error enviando el correo:", error);
-    res.status(500).json({ message: "Error al enviar el correo.", error });
-  }
-};
