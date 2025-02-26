@@ -57,10 +57,4 @@ router.put("/api/client/:id/add-daily-review", addDailyReview);
 
 router.post("/api/client/find-client-by-name", findClientByName);
 
-// Endpoint para enviar un correo electrónico
-router.post("/api/client/notifications/email", sendEmailNotification);
-
-// Endpoint para enviar un mensaje de WhatsApp
-router.post("/api/client/notifications/whatsapp", sendWhatsAppNotification);
-
 module.exports = router;
