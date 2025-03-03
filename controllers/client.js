@@ -192,7 +192,7 @@ exports.createClient = async (request, response) => {
       roles,
       data,
       cMJValidateNumbers,
-      user: user._id,
+      userId,
     });
 
     const savedClient = await newClient.save();
