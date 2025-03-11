@@ -10,6 +10,7 @@ const {
   getAdminProfile,
   updateAdmin,
 } = require("../controllers/admin");
+const { isResetTokenValid } = require("../middlewares/user");
 const {
   validateAdminSignUp,
   adminValidation,
@@ -45,7 +46,7 @@ router.post(
   resetPassword
 );
 router.get("/api/admins/profile", isAuth, getAdminProfile);
-router.get("/api/admin/verify-token", isResetAdminTokenValid, (req, res) => {
+router.get("/api/admin/verify-token", isResetTokenValid, (req, res) => {
   res.json({ success: true });
 });
 
