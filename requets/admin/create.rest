@@ -1,10 +1,33 @@
-POST http://localhost:3000/api/admin/users
+POST http://localhost:3001/api/create-admin
 Content-Type: application/json
 
 {
-    "userName": "adri",
-    "email": "adri.adrian@gmail.com",
-    "password": "12345678",
-    "confirmPassword": "12345678",
-    "roles": "admin"
+  "userName": "admin",
+  "email": "orkinoa@gmail.com",
+  "cellPhone":"1158060332",
+  "password": "securePassword123",
+  "confirmPassword": "securePassword123",
+  "roles": "admin",
+  "permissions": {
+    "manageUsers": true,
+    "manageClients": true,
+    "manageCourses": true,
+    "manageAppointments": true
+  },
+  "isSuperAdmin": false
+}
+###
+POST http://localhost:3001/api/admins/verify-email
+Content-Type: application/json
+
+{
+    "otp":"3616",
+    "adminId":"67d042e8f12a8dc006009a3f"
+}
+###
+POST http://localhost:3001/api/admins/forgot-password
+Content-Type: application/json
+
+{
+    "email":"orkinoa@gmail.com"
 }

@@ -29,18 +29,23 @@ exports.getAppointment = async (req, res) => {
 
 // appointments.controller.js
 exports.createAppointment = async (req, res) => {
+  console.log("entra en creeate apointmenr");
+
   try {
     const { clientId } = req.params;
+    const { date, time, status, position, userId, adminId } = req.body;
 
-    const { date, time, status, position } = req.body;
+    console.log(date, time, status, position, userId, adminId);
 
-    // Crear el nuevo turno
+    // Crear el nuevo turno con los valores opcionales de userId y adminId
     const newAppointment = await Appointment.create({
       date,
       time,
       status,
       position,
       clientId,
+      ...(userId && { userId }), // Solo agrega userId si está presente
+      ...(adminId && { adminId }), // Solo agrega adminId si está presente
     });
 
     // Agregar la referencia del turno al cliente

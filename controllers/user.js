@@ -20,7 +20,7 @@ const { createRandomBytes } = require("../helper/crypto");
 const { transporter } = require("../helper/mailer");
 
 exports.createUser = async (request, response) => {
-  const { userName, email, password } = request.body;
+  const { userName, email, cellPhone, password } = request.body;
 
   const userEmail = await User.findOne({ email });
 
@@ -35,6 +35,7 @@ exports.createUser = async (request, response) => {
   const user = await User({
     userName,
     email,
+    cellPhone,
     password: passwordHash,
   });
 
@@ -66,6 +67,7 @@ exports.createUser = async (request, response) => {
     user: {
       userName: user.userName,
       email: user.email,
+      cellPhone: user.cellPhone,
       id: user._id,
       avatar: user.avatar ? user.avatar : "",
       verified: user.verified,
@@ -146,6 +148,7 @@ exports.resendUserCode = async (request, response) => {
       user: {
         userName: user.userName,
         email: user.email,
+        cellPhone: user.cellPhone,
         id: user._id,
         avatar: user.avatar || "",
         verified: user.verified,
@@ -197,6 +200,7 @@ exports.signIn = async (request, response) => {
         id: user._id,
         userName: user.userName,
         email: user.email,
+        cellPhone: user.cellPhone,
         avatar: user.avatar ? user.avatar : "",
         token,
         roles: user.roles,
@@ -329,6 +333,7 @@ exports.verifyEmail = async (req, res) => {
     user: {
       userName: user.userName,
       email: user.email,
+      cellPhone: user.cellPhone,
       id: user._id,
       avatar: user.avatar ? user.avatar : "",
     },
