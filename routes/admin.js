@@ -31,7 +31,7 @@ router.post(
 router.put("/api/admins/:id", updateAdmin);
 router.post("/api/admins/resend-code", resendAdminCode);
 router.post(
-  "api/admins/sign-in",
+  "/api/admins/sign-in",
   validateAdminSignIn,
   adminValidation,
   signInAdmin

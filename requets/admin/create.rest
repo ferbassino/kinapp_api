@@ -1,4 +1,4 @@
-POST http://localhost:3001/api/create-admin
+POST https://kinapp-api.vercel.app/api/create-admin
 Content-Type: application/json
 
 {
@@ -17,22 +17,22 @@ Content-Type: application/json
   "isSuperAdmin": false
 }
 ###
-POST http://localhost:3001/api/admins/verify-email
+POST https://kinapp-api.vercel.app/api/admins/verify-email
 Content-Type: application/json
 
 {
-    "otp":"3339",
-    "adminId":"67d1bb0f4e17f98f51a1b6ac"
+    "otp":"6552",
+    "adminId":"67d1e6b6fd7042effdc19cd4"
 }
 ###
-POST http://localhost:3001/api/admins/forgot-password
+POST https://kinapp-api.vercel.app/api/admins/forgot-password
 Content-Type: application/json
 
 {
     "email":"orkinoa@gmail.com"
 }
 ###
-POST http://localhost:3001/reset-password?token=b8d71c6d1590804f30eba09e92c147853cf9800e0c2bdc0acb8805b78931&id=64a57e078ce2031475ae56aa
+POST https://kinapp-api.vercel.app/reset-password?token=b8d71c6d1590804f30eba09e92c147853cf9800e0c2bdc0acb8805b78931&id=64a57e078ce2031475ae56aa
 Content-Type: application/json
 
 {
