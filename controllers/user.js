@@ -386,9 +386,9 @@ exports.forgotPassword = async (req, res) => {
 };
 
 exports.resetPassword = async (req, res) => {
-  const { password } = req.body;
+  const { password, id } = req.body;
 
-  const user = await User.findById(req.user._id);
+  const user = await User.findById(id);
   if (!user) return sendError(res, "user not found");
 
   const isSamePassword = await user.comparePassword(password);

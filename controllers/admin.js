@@ -420,7 +420,7 @@ exports.verifyEmail = async (req, res) => {
       to: admin.email, // Correo del administrador
       subject: "Welcome email", // Asunto del correo
       html: plainEmailTemplate(
-        "Te damos la bienvenida al ecosistema kinApp",
+        "Te damos la bienvenida al ecosistema Orkino",
         "Tu correo se verificó correctamente"
       ),
     });
@@ -445,7 +445,6 @@ exports.verifyEmail = async (req, res) => {
 exports.forgotPassword = async (req, res) => {
   const { email } = req.body;
 
-  // Validar que se proporcione un correo electrónico
   if (!email) {
     return res.status(400).json({
       success: false,
@@ -453,7 +452,6 @@ exports.forgotPassword = async (req, res) => {
     });
   }
 
-  // Buscar el administrador por correo electrónico
   const admin = await Admin.findOne({ email });
 
   if (!admin) {
@@ -463,7 +461,6 @@ exports.forgotPassword = async (req, res) => {
     });
   }
 
-  // Verificar si ya existe un token de restablecimiento
   const token = await ResetAdminToken.findOne({ owner: admin._id });
 
   if (token) {
@@ -481,16 +478,19 @@ exports.forgotPassword = async (req, res) => {
   });
   await resetAdminToken.save();
 
-  // Enviar el correo electrónico con el enlace de restablecimiento
   try {
     await transporter.sendMail({
-      from: "<kinappbiomechanics@gmail.com>", // Remitente
-      to: admin.email, // Correo del administrador
-      subject: "Password reset", // Asunto del correo
+      from: "<kinappbiomechanics@gmail.com>",
+      to: admin.email,
+      subject: "Password reset",
       html: generatePasswordResetTemplate(
         admin.userName,
-        `https://reset-mu.vercel.app/reset-password?token=${randomBytes}&id=${admin._id}`
+        `http://localhost:5173/reset-password?token=${randomBytes}&id=${admin._id}`
       ),
+      // html: generatePasswordResetTemplate(
+      //   admin.userName,
+      //   `https://reset-mu.vercel.app/reset-password?token=${randomBytes}&id=${admin._id}`
+      // ),
     });
   } catch (error) {
     console.log("Error sending reset email:", error);
@@ -504,10 +504,9 @@ exports.forgotPassword = async (req, res) => {
 };
 
 exports.resetPassword = async (req, res) => {
-  const { password } = req.body;
+  const { password, id } = req.body;
 
-  // Buscar el administrador por su ID
-  const admin = await Admin.findById(req.admin._id);
+  const admin = await Admin.findById(id);
 
   if (!admin) {
     return res.status(404).json({
@@ -516,7 +515,6 @@ exports.resetPassword = async (req, res) => {
     });
   }
 
-  // Verificar si la nueva contraseña es diferente a la anterior
   const isSamePassword = await bcrypt.compare(password.trim(), admin.password);
 
   if (isSamePassword) {
@@ -526,7 +524,6 @@ exports.resetPassword = async (req, res) => {
     });
   }
 
-  // Validar la longitud de la contraseña
   if (password.trim().length < 8 || password.trim().length > 20) {
     return res.status(400).json({
       success: false,
@@ -534,20 +531,16 @@ exports.resetPassword = async (req, res) => {
     });
   }
 
-  // Hashear la nueva contraseña
   const passwordHash = await bcrypt.hash(password.trim(), 8);
 
-  // Actualizar la contraseña del administrador
   admin.password = passwordHash;
   await admin.save();
 
-  // Eliminar el token de restablecimiento
   await ResetAdminToken.findOneAndDelete({ owner: admin._id });
 
-  // Enviar un correo de confirmación
   try {
     await transporter.sendMail({
-      from: "<kinappbiomechanics@gmail.com>", // Remitente
+      from: "<kinappbiomechanics@gmail.com>",
       to: admin.email, // Correo del administrador
       subject: "Password reset successfully", // Asunto del correo
       html: plainEmailTemplate(
@@ -568,7 +561,6 @@ exports.resetPassword = async (req, res) => {
 
 exports.getAdminProfile = async (request, response) => {
   try {
-    // Verificar si el administrador está adjunto al objeto request
     if (!request.admin) {
       return response.status(401).json({
         success: false,
@@ -576,7 +568,6 @@ exports.getAdminProfile = async (request, response) => {
       });
     }
 
-    // Retornar la información del perfil del administrador
     response.json({
       success: true,
       admin: {

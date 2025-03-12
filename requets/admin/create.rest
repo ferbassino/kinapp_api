@@ -21,8 +21,8 @@ POST http://localhost:3001/api/admins/verify-email
 Content-Type: application/json
 
 {
-    "otp":"3616",
-    "adminId":"67d042e8f12a8dc006009a3f"
+    "otp":"3339",
+    "adminId":"67d1bb0f4e17f98f51a1b6ac"
 }
 ###
 POST http://localhost:3001/api/admins/forgot-password
@@ -30,4 +30,11 @@ Content-Type: application/json
 
 {
     "email":"orkinoa@gmail.com"
+}
+###
+POST http://localhost:3001/reset-password?token=b8d71c6d1590804f30eba09e92c147853cf9800e0c2bdc0acb8805b78931&id=64a57e078ce2031475ae56aa
+Content-Type: application/json
+
+{
+    "password": "87654321"
 }
