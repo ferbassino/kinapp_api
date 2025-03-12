@@ -485,12 +485,8 @@ exports.forgotPassword = async (req, res) => {
       subject: "Password reset",
       html: generatePasswordResetTemplate(
         admin.userName,
-        `http://localhost:5173/reset-password?token=${randomBytes}&id=${admin._id}`
+        `https://reset-admin-pass.vercel.app/reset-password?token=${randomBytes}&id=${admin._id}`
       ),
-      // html: generatePasswordResetTemplate(
-      //   admin.userName,
-      //   `https://reset-mu.vercel.app/reset-password?token=${randomBytes}&id=${admin._id}`
-      // ),
     });
   } catch (error) {
     console.log("Error sending reset email:", error);
