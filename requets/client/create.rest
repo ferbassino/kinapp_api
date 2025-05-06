@@ -2,8 +2,11 @@ POST http://localhost:3001/api/client/create
 Content-Type: application/json
 
 {
-    "email":"mengano@gmail.com",
+    "email":"albertofuertes715@gmail.com",
     "password":"0OwViH47",
+    "name":"alberto",
+    "surname":"fuertes",
+    "cellPhone":"1158060332",
     "sessionsHistory": [
     {
       "id": 1,
@@ -65,7 +68,8 @@ Content-Type: application/json
     "size":170,
     "gender":"female",
     "pALevel":"low",
-    "userId":"65fdd605d47aad0cb6c15314",
+    "userId":"67bb2f8b8e4caf9e0e43b75e",
+    "adminId":"67d204acdb4e7d4583dc1cbf",
     "roles":"bronze",
     "data":{
         "name":"fernado",

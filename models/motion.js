@@ -36,6 +36,9 @@ const motionSchema = new mongoose.Schema({
   magData: {
     type: Array,
   },
+  timestamp: {
+    type: Array,
+  },
   kinoveaData: {
     type: Array,
   },

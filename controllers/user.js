@@ -251,6 +251,8 @@ exports.uploadProfile = async (request, response) => {
 };
 
 exports.signOut = async (req, res) => {
+  console.log("entra en signout");
+
   if (req.headers && req.headers.authorization) {
     const token = req.headers.authorization.split(" ")[1];
 

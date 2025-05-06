@@ -17,10 +17,32 @@ const clientSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-
   password: {
     type: String,
   },
+  resetPasswordToken: {
+    type: String,
+  },
+  resetPasswordExpires: {
+    type: Date,
+  },
+  verificationCode: {
+    type: String,
+  },
+  verificationCodeExpires: {
+    type: Date, // Fecha y hora de expiración del código
+  },
+  verified: {
+    type: Boolean,
+    default: false,
+    required: true,
+  },
+  registered: {
+    type: Boolean,
+    default: false,
+    required: true,
+  },
+
   avatar: String,
   appointments: [{ type: mongoose.Schema.Types.ObjectId, ref: "Appointment" }],
   sessionsHistory: { type: Array },
@@ -47,6 +69,18 @@ const clientSchema = new mongoose.Schema({
   cMJValidateNumbers: {
     type: Number,
   },
+  appointmentId: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Appointment",
+    },
+  ],
+  sessionId: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Session",
+    },
+  ],
   userId: [
     {
       type: mongoose.Schema.Types.ObjectId,
@@ -62,7 +96,7 @@ const clientSchema = new mongoose.Schema({
   adminId: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      ref: "Admin",
     },
   ],
 });

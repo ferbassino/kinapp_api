@@ -1,0 +1,100 @@
+### Actualizar todos los campos de una sesión
+PUT http://localhost:3001/api/sessions/680e3af9890dcac12f7fdbf8
+Content-Type: application/json
+
+{
+  "done": true,
+  "adminId": "65a1bc2e3f4d8e2a1c9b7e3a",
+  "routine": [
+    {
+      "isCircuit": true,
+      "done": true,
+      "moment": "workOut",
+      "circuitPause": 60,
+      "details": {
+        "text": "Circuito modificado con nuevos ejercicios",
+        "videoUrls": ["https://ejemplo.com/video1"],
+        "imageUrls": ["https://ejemplo.com/imagen1"]
+      },
+      "exercises": [
+        {
+          "type": "dosed",
+          "done": true,
+          "sets": [
+            {
+              "reps": 12,
+              "weight": 20,
+              "duration": 45,
+              "break": 30,
+              "completed": true,
+              "zone": "Piernas",
+              "observations": "Buena técnica"
+            }
+          ],
+          "exercise": {
+            "_id": "68040e2cd632ad7e8a0e11a9",
+            "name": "Sentadilla modificada",
+            "description": "Nueva descripción del ejercicio",
+            "videoUrls": ["https://ejemplo.com/video-ejercicio"],
+            "imageUrls": ["https://ejemplo.com/imagen-ejercicio"],
+            "creator": "67bb2f8b8e4caf9e0e43b75e"
+          },
+          "sensor": {
+            "useSensor": true,
+            "sensorType": "accelerometer",
+            "description": "Nueva configuración de sensor",
+            "position": "En el tobillo derecho",
+            "videoUrls": ["https://ejemplo.com/video-sensor"],
+            "imageUrls": ["https://ejemplo.com/imagen-sensor"]
+          },
+          "observations": "El paciente mostró mejoría"
+        }
+      ]
+    },
+    {
+      "isCircuit": true,
+      "done": true,
+      "moment": "workOut",
+      "circuitPause": 60,
+      "details": {
+        "text": "Circuito modificado con nuevos ejercicios",
+        "videoUrls": ["https://ejemplo.com/video1"],
+        "imageUrls": ["https://ejemplo.com/imagen1"]
+      },
+      "exercises": [
+        {
+          "type": "dosed",
+          "done": true,
+          "sets": [
+            {
+              "reps": 12,
+              "weight": 20,
+              "duration": 45,
+              "break": 30,
+              "completed": true,
+              "zone": "Piernas",
+              "observations": "Buena técnica"
+            }
+          ],
+          "exercise": {
+            "_id": "68040e2cd632ad7e8a0e11a9",
+            "name": "Sentadilla modificada",
+            "description": "Nueva descripción del ejercicio",
+            "videoUrls": ["https://ejemplo.com/video-ejercicio"],
+            "imageUrls": ["https://ejemplo.com/imagen-ejercicio"],
+            "creator": "67bb2f8b8e4caf9e0e43b75e"
+          },
+          "sensor": {
+            "useSensor": true,
+            "sensorType": "accelerometer",
+            "description": "Nueva configuración de sensor",
+            "position": "En el tobillo derecho",
+            "videoUrls": ["https://ejemplo.com/video-sensor"],
+            "imageUrls": ["https://ejemplo.com/imagen-sensor"]
+          },
+          "observations": "El paciente mostró mejoría"
+        }
+      ]
+    }
+  ]
+}

@@ -1,12 +1,12 @@
-POST https://kinapp-api.vercel.app/api/create-admin
+POST http://localhost:3001/api/create-admin
 Content-Type: application/json
 
 {
-  "userName": "admin",
-  "email": "orkinoa@gmail.com",
+  "userName":"admin",
+  "email":"orkinoa@gmail.com",
   "cellPhone":"1158060332",
-  "password": "securePassword123",
-  "confirmPassword": "securePassword123",
+  "password":"12345678",
+  "confirmPassword":"12345678",
   "roles": "admin",
   "permissions": {
     "manageUsers": true,
@@ -21,8 +21,8 @@ POST https://kinapp-api.vercel.app/api/admins/verify-email
 Content-Type: application/json
 
 {
-    "otp":"6552",
-    "adminId":"67d1e6b6fd7042effdc19cd4"
+    "otp":"3285",
+    "adminId":"67d204acdb4e7d4583dc1cbf"
 }
 ###
 POST https://kinapp-api.vercel.app/api/admins/forgot-password
@@ -37,4 +37,12 @@ Content-Type: application/json
 
 {
     "password": "87654321"
+}
+###
+POST http://localhost:3001/api/admins/sign-in
+Content-Type: application/json
+
+{
+    "email":"orkinoa@gmail.com",
+    "password":"12345678"
 }

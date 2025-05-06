@@ -29,26 +29,39 @@ exports.getAppointment = async (req, res) => {
 
 // appointments.controller.js
 exports.createAppointment = async (req, res) => {
-  console.log("entra en creeate apointmenr");
-
   try {
     const { clientId } = req.params;
-    const { date, time, status, position, userId, adminId } = req.body;
+    const {
+      date,
+      time,
+      status,
+      paid,
+      payment,
+      remainsToPay,
+      serviceType,
+      location,
+      notes,
+      sessionId,
+      userId,
+      adminId,
+    } = req.body;
 
-    console.log(date, time, status, position, userId, adminId);
-
-    // Crear el nuevo turno con los valores opcionales de userId y adminId
     const newAppointment = await Appointment.create({
       date,
       time,
       status,
-      position,
+      paid,
+      payment,
+      remainsToPay,
+      serviceType,
+      location,
+      notes,
       clientId,
-      ...(userId && { userId }), // Solo agrega userId si está presente
-      ...(adminId && { adminId }), // Solo agrega adminId si está presente
+      ...(sessionId && { sessionId }),
+      ...(userId && { userId }),
+      ...(adminId && { adminId }),
     });
 
-    // Agregar la referencia del turno al cliente
     const updatedClient = await Client.findByIdAndUpdate(
       clientId,
       { $push: { appointments: newAppointment._id } },
@@ -66,15 +79,46 @@ exports.createAppointment = async (req, res) => {
   }
 };
 
-// Actualizar un turno
 exports.updateAppointment = async (req, res) => {
   const { id } = req.params;
-  const { date, time, status, notes, position, location } = req.body;
+  const {
+    date,
+    time,
+    status,
+    paid,
+    payment,
+    remainsToPay,
+    serviceType,
+    notes,
+    location,
+  } = req.body;
+  console.log(
+    "en el update ",
+    date,
+    time,
+    status,
+    paid,
+    payment,
+    remainsToPay,
+    serviceType,
+    notes,
+    location
+  );
 
   try {
     const updatedAppointment = await Appointment.findByIdAndUpdate(
       id,
-      { date, time, status, notes, position, location },
+      {
+        date,
+        time,
+        status,
+        paid,
+        payment,
+        remainsToPay,
+        serviceType,
+        notes,
+        location,
+      },
       { new: true }
     );
     if (!updatedAppointment) {

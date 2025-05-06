@@ -90,6 +90,12 @@ const userSchema = new mongoose.Schema({
       ref: "User", // Referencia al mismo modelo "User"
     },
   ],
+  adminId: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Admin", // Referencia al mismo modelo "User"
+    },
+  ],
   // tokens: [{ type: Object }],
 });
 

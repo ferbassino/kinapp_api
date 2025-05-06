@@ -26,8 +26,8 @@ exports.getMotionTest = async (request, response) => {
 
   try {
     const motionTest = await MotionTest.findById(id)
-      .populate("user")
-      .populate("client");
+      .populate("userId")
+      .populate("clientId");
 
     if (motionTest) {
       return response.json({
@@ -58,6 +58,7 @@ exports.createMotionTest = async (request, response) => {
       accData,
       gyroData,
       magData,
+      timestamp,
       kinoveaData,
       videoFrameRate,
       refDistance,
@@ -89,6 +90,7 @@ exports.createMotionTest = async (request, response) => {
       accData,
       gyroData,
       magData,
+      timestamp,
       kinoveaData,
       videoFrameRate,
       refDistance,

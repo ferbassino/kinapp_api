@@ -1,0 +1,23 @@
+POST http://localhost:3001/api/client/save-password
+Content-Type: application/json
+
+{
+  "email": "albertofuertes715@gmail.com",
+  "password": "12345678",
+  "confirmPassword":"12345678"
+}
+###
+POST http://localhost:3001/api/client/verify-code
+Content-Type: application/json
+
+{
+  "email": "albertofuertes715@gmail.com",
+  "verificationCode": "7101"
+}
+###
+POST http://localhost:3001/api/client/generate-new-code
+Content-Type: application/json
+
+{
+  "email": "albertofuertes715@gmail.com"
+}

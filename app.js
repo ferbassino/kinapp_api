@@ -16,6 +16,8 @@ const mongoose = require("mongoose");
 const productsRouter = require("./routes/products");
 const appointmentRoutes = require("./routes/appointments");
 const paperRoutes = require("./routes/papers");
+const exerciseRoutes = require("./routes/exercise");
+const sessionRoutes = require("./routes/session");
 // ------------------
 app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
@@ -41,6 +43,8 @@ app.use(productsRouter);
 app.use(appointmentRoutes);
 app.use(paperRoutes);
 app.use(adminRouter);
+app.use(exerciseRoutes);
+app.use(sessionRoutes);
 
 // socket---------------------------
 // Crear servidor HTTP

@@ -5,6 +5,8 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const sharp = require("sharp");
 const nodemailer = require("nodemailer");
+const crypto = require("crypto");
+const mongoose = require("mongoose");
 
 const { transporter } = require("../helper/mailer");
 
@@ -29,13 +31,12 @@ exports.getClients = async (request, response) => {
 
 exports.getClient = async (request, response) => {
   const { id } = request.params;
-  console.log("id en getClient:", id);
 
   try {
     const client = await Client.findById(id)
       .populate("appointments")
-      .populate("motion")
-      .populate("user");
+      .populate("motionId")
+      .populate("userId");
 
     if (client) {
       response.json({
@@ -53,18 +54,9 @@ exports.getClient = async (request, response) => {
   }
 };
 
-// controllers/clientController.js
-
 exports.findClientByName = async (req, res) => {
   try {
-    console.log("requ.body", req.body);
-
     const { name, surname } = req.body; // Recibimos el nombre y apellido desde la solicitud
-    console.log(
-      "lo que llega al backend -----------------------",
-      name,
-      surname
-    );
 
     // Buscar el cliente por nombre y apellido
     const client = await Client.findOne({ name, surname });
@@ -83,6 +75,289 @@ exports.findClientByName = async (req, res) => {
     });
   } catch (error) {
     return res.status(500).json({ success: false, error: error.message });
+  }
+};
+
+const orkino = nodemailer.createTransport({
+  host: "smtp.gmail.com",
+  port: 465,
+  secure: true,
+  auth: {
+    user: "orkinogestion@gmail.com",
+    pass: "qvoajbigbggcvycj",
+  },
+});
+
+const generateVerificationCode = () => {
+  return Math.floor(1000 + Math.random() * 9000).toString();
+};
+
+exports.savePasswordAndSendVerificationCode = async (req, res) => {
+  const { email, password, confirmPassword } = req.body;
+
+  try {
+    if (password !== confirmPassword) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Las contraseñas no coinciden" });
+    }
+
+    const client = await Client.findOne({ email });
+
+    if (!client) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Cliente no encontrado" });
+    }
+    if (client.registered) {
+      return res
+        .status(404)
+        .json({ success: false, message: "El cliente ya está registrado" });
+    }
+
+    const salt = await bcrypt.genSalt(8);
+    const hashedPassword = await bcrypt.hash(password, salt);
+
+    const verificationCode = generateVerificationCode();
+    const verificationCodeExpires = new Date(Date.now() + 10 * 60 * 1000);
+
+    client.password = hashedPassword;
+    client.registered = true;
+    client.verificationCode = verificationCode;
+    client.verificationCodeExpires = verificationCodeExpires;
+    await client.save();
+
+    // Crear objeto cliente sin password para la respuesta
+    const clientResponse = client.toObject();
+    delete clientResponse.password;
+
+    const mailOptions = {
+      from: '"Orkino" <orkinogestion@gmail.com>',
+      to: email,
+      subject: "Código de verificación",
+      text: `Tu código de verificación es: ${verificationCode}. Este código expirará en 10 minutos.`,
+    };
+
+    orkino.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.log("Error al enviar el correo:", error);
+        return res.status(500).json({
+          success: false,
+          message: "Error al enviar el código de verificación",
+        });
+      }
+
+      res.status(200).json({
+        success: true,
+        message: "Código de verificación enviado",
+        client: clientResponse, // Enviamos el cliente sin password
+      });
+    });
+  } catch (error) {
+    console.log("Error en el controlador:", error);
+    res.status(500).json({ success: false, message: "Error en el servidor" });
+  }
+};
+
+exports.generateNewVerificationCode = async (req, res) => {
+  const { email } = req.body;
+
+  if (!email) {
+    return res.status(400).json({
+      success: false,
+      message: "El email es requerido",
+    });
+  }
+
+  try {
+    const client = await Client.findOne({ email }).select("-password");
+
+    if (!client) {
+      return res.status(404).json({
+        success: false,
+        message: "Cliente no encontrado",
+      });
+    }
+
+    if (client.verified) {
+      return res.status(400).json({
+        success: false,
+        message: "La cuenta ya está verificada",
+        client, // Devuelve el cliente aunque esté verificado
+      });
+    }
+
+    if (
+      client.verificationCode &&
+      client.verificationCodeExpires > new Date()
+    ) {
+      return res.status(400).json({
+        success: false,
+        message:
+          "Ya existe un código de verificación activo. Por favor, revisa tu correo electrónico.",
+        client, // Devuelve el cliente actual
+      });
+    }
+
+    const newVerificationCode = generateVerificationCode();
+    const verificationCodeExpires = new Date(Date.now() + 10 * 60 * 1000);
+
+    // Actualizar solo los campos necesarios
+    const updatedClient = await Client.findOneAndUpdate(
+      { email },
+      {
+        verificationCode: newVerificationCode,
+        verificationCodeExpires,
+        $unset: {
+          verificationAttempts: 1,
+        },
+      },
+      { new: true, select: "-password" }
+    );
+
+    const mailOptions = {
+      from: '"Orkino" <orkinogestion@gmail.com>',
+      to: email,
+      subject: "Nuevo código de verificación",
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+          <h2 style="color: #2c3e50;">Nuevo código de verificación</h2>
+          <p>Tu nuevo código de verificación es:</p>
+          <div style="background: #f8f9fa; padding: 10px 15px; 
+              font-size: 24px; letter-spacing: 2px; 
+              display: inline-block; margin: 10px 0;">
+            ${newVerificationCode}
+          </div>
+          <p>Este código expirará en 10 minutos.</p>
+          <p style="font-size: 12px; color: #7f8c8d;">
+            Si no solicitaste este código, por favor ignora este mensaje.
+          </p>
+        </div>
+      `,
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.error("Error al enviar el correo:", error);
+        return res.status(500).json({
+          success: false,
+          message: "Error al enviar el nuevo código de verificación",
+          client: updatedClient,
+        });
+      }
+
+      res.status(200).json({
+        success: true,
+        message: "Nuevo código de verificación enviado",
+        client: updatedClient,
+      });
+    });
+  } catch (error) {
+    console.error("Error en el controlador:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error en el servidor",
+      error: error.message,
+    });
+  }
+};
+exports.verifyCode = async (req, res) => {
+  const { email, verificationCode } = req.body;
+
+  // Validación básica de los parámetros de entrada
+  if (!email || !verificationCode) {
+    return res.status(400).json({
+      success: false,
+      message: "Email y código de verificación son requeridos",
+    });
+  }
+
+  try {
+    // Buscar cliente excluyendo campos sensibles
+    const client = await Client.findOne({ email }).select("-password");
+
+    if (!client) {
+      return res.status(404).json({
+        success: false,
+        message: "Cliente no encontrado",
+      });
+    }
+
+    // Verificar si el código coincide
+    if (client.verificationCode !== verificationCode) {
+      return res.status(400).json({
+        success: false,
+        message: "Código de verificación incorrecto",
+        client, // Devuelve el cliente actual para referencia
+      });
+    }
+
+    // Verificar si el código ha expirado
+    if (client.verificationCodeExpires < new Date()) {
+      return res.status(400).json({
+        success: false,
+        message: "El código de verificación ha expirado",
+        client, // Devuelve el cliente actual
+      });
+    }
+
+    // Actualizar el cliente como verificado
+    const updatedClient = await Client.findOneAndUpdate(
+      { email },
+      {
+        $set: { verified: true },
+        $unset: {
+          verificationCode: 1,
+          verificationCodeExpires: 1,
+        },
+      },
+      { new: true, select: "-password" } // Devuelve el documento actualizado
+    );
+
+    // Configurar correo de confirmación
+    const mailOptions = {
+      from: '"Orkino" <orkinogestion@gmail.com>',
+      to: email,
+      subject: "Verificación exitosa",
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+          <h2 style="color: #2c3e50;">¡Verificación Exitosa!</h2>
+          <p>Tu cuenta ha sido verificada correctamente.</p>
+          <p>Ahora puedes acceder a todos los servicios disponibles.</p>
+          <p style="font-size: 12px; color: #7f8c8d;">
+            Si no reconoces esta actividad, por favor contacta con soporte.
+          </p>
+        </div>
+      `,
+    };
+
+    // Enviar correo electrónico
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.error("Error al enviar correo de confirmación:", error);
+        // Aunque falló el correo, la verificación fue exitosa
+        return res.status(200).json({
+          success: true,
+          message:
+            "Cuenta verificada, pero no se pudo enviar la confirmación por correo",
+          client: updatedClient,
+        });
+      }
+
+      // Respuesta exitosa completa
+      res.status(200).json({
+        success: true,
+        message: "Cuenta verificada exitosamente",
+        client: updatedClient,
+      });
+    });
+  } catch (error) {
+    console.error("Error en verifyCode:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error en el servidor",
+      error: error.message,
+    });
   }
 };
 
@@ -145,6 +420,10 @@ exports.createClient = async (request, response) => {
       surname,
       cellPhone,
       password,
+      resetPasswordToken,
+      resetPasswordExpires,
+      verificationCode,
+      verificationCodeExpires,
       avatar,
       appointments,
       sessionsHistory,
@@ -155,6 +434,7 @@ exports.createClient = async (request, response) => {
       size,
       gender,
       userId,
+      adminId,
       roles,
       data,
       cMJValidateNumbers,
@@ -180,6 +460,10 @@ exports.createClient = async (request, response) => {
       surname,
       cellPhone,
       password,
+      resetPasswordToken,
+      resetPasswordExpires,
+      verificationCode,
+      verificationCodeExpires,
       avatar,
       appointments,
       sessionsHistory,
@@ -193,6 +477,7 @@ exports.createClient = async (request, response) => {
       data,
       cMJValidateNumbers,
       userId,
+      adminId,
     });
 
     const savedClient = await newClient.save();
@@ -203,6 +488,140 @@ exports.createClient = async (request, response) => {
   } catch (error) {
     console.error("Error creando cliente:", error);
     response.status(500).json({ success: false, message: error.message });
+  }
+};
+
+exports.forgotPassword = async (req, res) => {
+  const { email } = req.body;
+
+  try {
+    const client = await Client.findOne({ email });
+
+    if (!client) {
+      return res.status(200).json({
+        message:
+          "Si el correo existe, te enviaremos un enlace de recuperación.",
+      });
+    }
+
+    const resetToken = crypto.randomBytes(20).toString("hex");
+
+    const resetTokenExpires = new Date(Date.now() + 3600000); // 1 hora
+
+    client.resetPasswordToken = resetToken;
+    client.resetPasswordExpires = resetTokenExpires;
+    await client.save();
+
+    const resetUrl = `http://localhost:5173/reset-password?token=${resetToken}`;
+
+    const mailOptions = {
+      from: '"Orkino" <orkinogestion@gmail.com>',
+      to: email,
+      subject: "Recuperación de contraseña",
+      text: `Para restablecer tu contraseña, haz clic en el siguiente enlace: ${resetUrl}\n\nEste enlace expirará en 1 hora.`, // Cuerpo del correo
+    };
+
+    orkino.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.log("Error al enviar el correo:", error);
+        return res.status(500).json({
+          success: false,
+          message: "Error al enviar el correo de recuperación",
+        });
+      }
+      console.log("Correo enviado:", info.response);
+      res.status(200).json({
+        success: true,
+        message:
+          "Si el correo existe, te enviaremos un enlace de recuperación.",
+      });
+    });
+  } catch (error) {
+    console.log("Error en el controlador:", error);
+    res.status(500).json({ message: "Error en el servidor" });
+  }
+};
+
+exports.authenticateClient = async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    const client = await Client.findOne({ email });
+
+    if (!client) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Cliente no encontrado" });
+    }
+
+    const isPasswordValid = await bcrypt.compare(password, client.password);
+
+    if (!isPasswordValid) {
+      return res
+        .status(401)
+        .json({ success: false, message: "Credenciales incorrectas" });
+    }
+
+    const token = jwt.sign(
+      { id: client._id, email: client.email },
+      process.env.JWT_SECRET,
+      { expiresIn: "1h" }
+    );
+
+    res.status(200).json({ success: true, token, client });
+  } catch (error) {
+    console.error("Error autenticando cliente:", error);
+    res.status(500).json({ success: false, message: "Error en el servidor" });
+  }
+};
+
+exports.resetPassword = async (req, res) => {
+  const { token, newPassword } = req.body;
+
+  try {
+    // Buscar al cliente por el token y verificar que no haya expirado
+    const client = await Client.findOne({
+      resetPasswordToken: token,
+      resetPasswordExpires: { $gt: new Date() }, // Verificar que el token no haya expirado
+    });
+
+    if (!client) {
+      return res
+        .status(400)
+        .json({ message: "El token es inválido o ha expirado." });
+    }
+
+    // Encriptar la nueva contraseña
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(newPassword, salt);
+
+    client.password = hashedPassword;
+    client.resetPasswordToken = undefined;
+    client.resetPasswordExpires = undefined;
+    await client.save();
+
+    // Enviar un correo de confirmación
+    const mailOptions = {
+      from: '"Orkino" <orkinogestion@gmail.com>', // Remitente
+      to: client.email, // Destinatario
+      subject: "Contraseña restablecida", // Asunto
+      text: `Tu contraseña ha sido restablecida exitosamente.`, // Cuerpo del correo
+    };
+
+    orkino.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.log("Error al enviar el correo:", error);
+      }
+      console.log("Correo enviado:", info.response);
+    });
+
+    res.status(200).json({
+      success: true,
+      message: "Contraseña restablecida exitosamente.",
+    });
+  } catch (error) {
+    console.log("Error en el controlador:", error);
+    res.status(500).json({ success: false, message: "Error en el servidor" });
   }
 };
 
@@ -220,7 +639,6 @@ exports.updateClient = async (req, res) => {
     const { id } = req.params;
     const updateData = req.body;
 
-    // Asegurar que personalData se actualiza correctamente
     if (updateData.personalData) {
       updateData.$set = { personalData: updateData.personalData };
       delete updateData.personalData;
@@ -459,7 +877,6 @@ exports.updateClientLifeStyle = async (req, res) => {
   try {
     const { id } = req.params;
     const { sessionNumber, lifeStyleData } = req.body;
-    console.log(id, sessionNumber, lifeStyleData);
 
     // Buscar al cliente por ID
     const client = await Client.findById(id);
@@ -512,6 +929,7 @@ exports.addTreatmentToClient = async (req, res) => {
   try {
     const { id } = req.params;
     const { treatment } = req.body;
+    console.log("el tratameinto", treatment);
 
     const client = await Client.findById(id);
 
@@ -541,10 +959,9 @@ exports.addTreatmentToClient = async (req, res) => {
       date: treatment.date,
       hour: treatment.hour,
       done: false,
+      inPerson: true,
       dailyReview: {},
-      warmUp: treatment.warmUp,
-      workOut: treatment.workOut,
-      coolDown: treatment.coolDown,
+      routine: treatment.routine,
     });
 
     const updatedClient = await Client.findByIdAndUpdate(
@@ -609,8 +1026,7 @@ exports.deleteTreatmentFromClient = async (req, res) => {
 exports.updateSession = async (req, res) => {
   try {
     const { id } = req.params;
-    const { date, warmUp, workOut, coolDown } = req.body;
-    console.log(id, date, warmUp, workOut, coolDown);
+    const { date, routine } = req.body;
 
     const client = await Client.findById(id);
     if (!client) {
@@ -631,9 +1047,7 @@ exports.updateSession = async (req, res) => {
       return res.status(404).json({ error: "Sesión no encontrada" });
     }
 
-    sessionToUpdate.warmUp = warmUp;
-    sessionToUpdate.workOut = workOut;
-    sessionToUpdate.coolDown = coolDown;
+    sessionToUpdate.routine = routine;
 
     const updatedClient = await Client.findByIdAndUpdate(
       id,
@@ -649,13 +1063,9 @@ exports.updateSession = async (req, res) => {
 };
 
 exports.addNewTreatmentToClient = async (req, res) => {
-  console.log("entra por aca");
-
   try {
     const { id } = req.params; // ID del cliente
     const { treatment } = req.body; // Nueva sesión
-    console.log("clientId", id);
-    console.log("treatment", treatment);
 
     // Encuentra al cliente y agrega la nueva sesión
     const updatedClient = await Client.findByIdAndUpdate(
@@ -671,14 +1081,9 @@ exports.addNewTreatmentToClient = async (req, res) => {
   }
 };
 exports.deactivateTreatmentForClient = async (req, res) => {
-  console.log("Solicitud para desactivar tratamiento recibida.");
-
   try {
     const { id } = req.params; // ID del cliente
     const { treatmentNumber } = req.body; // Número del tratamiento a desactivar
-
-    console.log("Cliente ID:", id);
-    console.log("Tratamiento a desactivar:", treatmentNumber);
 
     // Encuentra el cliente y actualiza el tratamiento activo
     const updatedClient = await Client.findOneAndUpdate(
@@ -710,7 +1115,6 @@ exports.deactivateTreatmentForClient = async (req, res) => {
 exports.addDailyReview = async (req, res) => {
   const { id } = req.params; // ID del cliente
   const { dailyReview } = req.body; // Nuevo dailyReview a agregar
-  console.log(id, dailyReview);
 
   try {
     const client = await Client.findById(id);
@@ -733,5 +1137,266 @@ exports.addDailyReview = async (req, res) => {
   } catch (error) {
     console.error("Error al agregar dailyReview:", error);
     return res.status(500).json({ message: "Error del servidor." });
+  }
+};
+
+// sesiones asincronas
+exports.addAsynchronousSession = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { sessionData } = req.body;
+
+    if (!sessionData || typeof sessionData !== "object") {
+      return res.status(400).json({
+        success: false,
+        error: "Datos de sesión inválidos",
+      });
+    }
+
+    if (!sessionData.date || !sessionData.routine) {
+      return res.status(400).json({
+        success: false,
+        error: "Fecha y ejercicios son requeridos",
+      });
+    }
+
+    const updatedClient = await Client.findByIdAndUpdate(
+      id,
+      {
+        $push: {
+          "sessionsHistory.$[treatment].asynchronousSession": {
+            ...sessionData,
+            _id: new mongoose.Types.ObjectId(),
+          },
+        },
+      },
+      {
+        new: true,
+        arrayFilters: [{ "treatment.active": true }],
+        runValidators: true,
+      }
+    ).lean();
+
+    if (!updatedClient) {
+      return res.status(404).json({
+        success: false,
+        error: "Cliente no encontrado",
+      });
+    }
+
+    res.json({
+      success: true,
+      updatedClient,
+    });
+  } catch (error) {
+    console.error("Error al agregar sesión asíncrona:", error);
+    res.status(500).json({
+      success: false,
+      error: "Error interno del servidor",
+      details:
+        process.env.NODE_ENV === "development" ? error.message : undefined,
+    });
+  }
+};
+exports.getAllAsyncSessions = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const client = await Client.findById(id).lean();
+
+    if (!client) {
+      return res.status(404).json({
+        success: false,
+        error: "Cliente no encontrado",
+      });
+    }
+
+    // Encontrar el tratamiento activo
+    const activeTreatment = client.sessionsHistory.find(
+      (t) => t.active === true
+    );
+
+    if (!activeTreatment || !activeTreatment.asynchronousSession) {
+      return res.json({
+        success: true,
+        sessions: [],
+      });
+    }
+
+    res.json({
+      success: true,
+      sessions: activeTreatment.asynchronousSession,
+    });
+  } catch (error) {
+    console.error("Error al obtener sesiones asíncronas:", error);
+    res.status(500).json({
+      success: false,
+      error: "Error interno del servidor",
+      details:
+        process.env.NODE_ENV === "development" ? error.message : undefined,
+    });
+  }
+};
+
+exports.getSingleAsyncSession = async (req, res) => {
+  try {
+    const { id, sessionId } = req.params;
+
+    const client = await Client.findOne(
+      {
+        _id: id,
+        "sessionsHistory.asynchronousSession._id": sessionId,
+      },
+      {
+        "sessionsHistory.$": 1,
+      }
+    ).lean();
+
+    if (!client) {
+      return res.status(404).json({
+        success: false,
+        error: "Cliente o sesión no encontrada",
+      });
+    }
+
+    const activeTreatment = client.sessionsHistory.find(
+      (t) => t.active === true
+    );
+    const session = activeTreatment.asynchronousSession.find(
+      (s) => s._id.toString() === sessionId
+    );
+
+    if (!session) {
+      return res.status(404).json({
+        success: false,
+        error: "Sesión no encontrada",
+      });
+    }
+
+    res.json({
+      success: true,
+      session,
+    });
+  } catch (error) {
+    console.error("Error al obtener sesión asíncrona:", error);
+    res.status(500).json({
+      success: false,
+      error: "Error interno del servidor",
+      details:
+        process.env.NODE_ENV === "development" ? error.message : undefined,
+    });
+  }
+};
+// Controlador actualizado para updateAsyncSession
+exports.updateAsyncSession = async (req, res) => {
+  try {
+    const { id, sessionId } = req.params;
+    const { sessionData } = req.body;
+
+    if (
+      !mongoose.Types.ObjectId.isValid(id) ||
+      !mongoose.Types.ObjectId.isValid(sessionId)
+    ) {
+      return res.status(400).json({
+        success: false,
+        error: "ID inválido",
+      });
+    }
+
+    if (!sessionData || typeof sessionData !== "object") {
+      return res.status(400).json({
+        success: false,
+        error: "Datos de sesión inválidos",
+      });
+    }
+
+    const updatedClient = await Client.findOneAndUpdate(
+      {
+        _id: id,
+        "sessionsHistory.treatments.asynchronousSession._id": sessionId,
+      },
+      {
+        $set: {
+          "sessionsHistory.$[treatment].asynchronousSession.$[session]": {
+            ...sessionData,
+            _id: sessionId,
+          },
+        },
+      },
+      {
+        new: true,
+        arrayFilters: [
+          { "treatment.active": true },
+          { "session._id": new mongoose.Types.ObjectId(sessionId) },
+        ],
+        runValidators: true,
+      }
+    ).lean();
+
+    if (!updatedClient) {
+      return res.status(404).json({
+        success: false,
+        error: "Cliente o sesión no encontrada",
+      });
+    }
+
+    res.json({
+      success: true,
+      updatedClient,
+    });
+  } catch (error) {
+    console.error("Error al editar sesión asíncrona:", error);
+    res.status(500).json({
+      success: false,
+      error: "Error interno del servidor",
+    });
+  }
+};
+exports.deleteAsyncSession = async (req, res) => {
+  try {
+    const { id, sessionId } = req.params;
+
+    if (
+      !mongoose.Types.ObjectId.isValid(id) ||
+      !mongoose.Types.ObjectId.isValid(sessionId)
+    ) {
+      return res.status(400).json({
+        success: false,
+        error: "ID inválido",
+      });
+    }
+
+    const updatedClient = await Client.findByIdAndUpdate(
+      id,
+      {
+        $pull: {
+          "sessionsHistory.$[treatment].asynchronousSession": {
+            _id: new mongoose.Types.ObjectId(sessionId),
+          },
+        },
+      },
+      {
+        new: true,
+        arrayFilters: [{ "treatment.active": true }],
+      }
+    ).lean();
+
+    if (!updatedClient) {
+      return res.status(404).json({
+        success: false,
+        error: "Cliente o sesión no encontrada",
+      });
+    }
+
+    res.json({
+      success: true,
+      updatedClient,
+    });
+  } catch (error) {
+    console.error("Error al eliminar sesión asíncrona:", error);
+    res.status(500).json({
+      success: false,
+      error: "Error interno del servidor",
+    });
   }
 };

@@ -1,0 +1,23 @@
+### 1. Crear un nuevo ejercicio (sin autenticación)
+POST http://localhost:3001/api/exercise
+Content-Type: application/json
+
+{
+  "name": "Flexiones de brazos",
+  "description": "Ejercicio básico para fortalecer pecho y brazos",
+  "videoUrls": [
+    "https://youtu.be/k8jG-jhB0p0?si=-JQ22zAMOasK09Rq1",
+    "https://youtu.be/fytUyRgcjZY?si=havkaZnXTlFA-CRM"
+  ],
+  "imageUrls": [
+    "https://es.velitessport.com/wp-content/uploads/2017/09/complementa-entrenamiento-sistema-trx.jpg",
+    "https://i.pinimg.com/originals/59/06/f4/5906f49b2410bce024c94556f0452007.jpg"
+  ],
+  "muscleGroups": ["pecho", "brazos"],
+  "difficulty": "principiante",
+  "equipment": ["peso corporal"],
+  "duration": 5,
+  "calories": 100,
+  "isPublic": true,
+  "creator": "67bb2f8b8e4caf9e0e43b75e" 
+}

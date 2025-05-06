@@ -18,6 +18,12 @@ const appointmentSchema = new mongoose.Schema({
       ref: "User",
     },
   ],
+  sessionId: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Session",
+    },
+  ],
   date: {
     type: String, // Usamos ISO 8601 (YYYY-MM-DD)
     required: true,
@@ -31,14 +37,30 @@ const appointmentSchema = new mongoose.Schema({
     enum: ["pending", "cancelled", "completed"], // Valores permitidos
     default: "pending",
   },
+  paid: {
+    type: String,
+    enum: ["unpaid", "paid", "partial"], // Valores permitidos
+    default: "unpaid",
+  },
+  payment: {
+    type: Number,
+    default: 0,
+  },
+  remainsToPay: {
+    type: Number,
+    default: 0,
+  },
+  serviceType: {
+    type: String,
+  },
+  location: {
+    type: String,
+  },
   position: {
     type: String,
   },
   notes: {
     type: String, // Campo opcional para notas adicionales
-  },
-  location: {
-    type: String, // Ubicación del turno (opcional)
   },
 });
 

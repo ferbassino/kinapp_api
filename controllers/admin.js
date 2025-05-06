@@ -10,6 +10,7 @@ const {
 const { transporter } = require("../helper/mailer");
 const ResetAdminToken = require("../models/resetAdminToken");
 const { createRandomBytes } = require("../helper/crypto");
+const jwt = require("jsonwebtoken");
 exports.getAllAdmins = async (request, response) => {
   try {
     // Buscar todos los administradores en la base de datos
@@ -80,7 +81,8 @@ exports.createAdmin = async (request, response) => {
     }
 
     // Hashear la contraseña
-    const passwordHash = await bcrypt.hash(password, 8);
+
+    const passwordHash = await bcrypt.hash(password.trim(), 8);
 
     // Crear el administrador
     const admin = new Admin({
@@ -290,31 +292,59 @@ exports.signInAdmin = async (request, response) => {
     const { email, password } = request.body;
 
     // Validar que se proporcionen el correo electrónico y la contraseña
-    if (!email.trim() || !password.trim()) {
-      return response.status(400).json({
+    if (!email || !password) {
+      return response.status.json({
         success: false,
-        message: "Email / password missing",
+        message:
+          "Por favor, proporciona un correo electrónico y una contraseña.",
+      });
+    }
+
+    // Validar el formato del correo electrónico
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email.trim())) {
+      return response.json({
+        success: false,
+        message: "El formato del correo electrónico no es válido.",
+      });
+    }
+
+    // Validar la longitud de la contraseña
+    if (password.trim().length < 8 || password.trim().length > 20) {
+      return response.json({
+        success: false,
+        message: "La contraseña debe tener entre 8 y 20 caracteres.",
       });
     }
 
     // Buscar el administrador por correo electrónico
-    const admin = await Admin.findOne({ email });
+    const admin = await Admin.findOne({ email: email.trim() });
 
     // Si no se encuentra el administrador, retornar un error
     if (!admin) {
-      return response.status(404).json({
+      return response.json({
         success: false,
-        message: "Admin not found with the given email",
+        message:
+          "No se encontró un administrador con el correo electrónico proporcionado.",
       });
     }
 
     // Verificar si la contraseña coincide
-    const isMatch = await bcrypt.compare(password, admin.password);
+    const isMatch = await bcrypt.compare(password.trim(), admin.password);
 
     if (!isMatch) {
-      return response.status(401).json({
+      return response.json({
         success: false,
-        message: "Password does not match",
+        message: "La contraseña es incorrecta. Por favor, inténtalo de nuevo.",
+      });
+    }
+
+    // Verificar si el administrador está verificado (si aplica)
+    if (!admin.verified) {
+      return response.json({
+        success: false,
+        message:
+          "Tu cuenta no ha sido verificada. Por favor, verifica tu correo electrónico.",
       });
     }
 
@@ -326,6 +356,7 @@ exports.signInAdmin = async (request, response) => {
     // Retornar una respuesta exitosa con la información del administrador
     response.json({
       success: true,
+      message: "Inicio de sesión exitoso.",
       admin: {
         id: admin._id,
         userName: admin.userName,
@@ -350,7 +381,8 @@ exports.signInAdmin = async (request, response) => {
     console.error("Error in signInAdmin:", error);
     response.status(500).json({
       success: false,
-      message: "Internal server error",
+      message:
+        "Ocurrió un error en el servidor. Por favor, inténtalo de nuevo más tarde.",
     });
   }
 };

@@ -1,0 +1,13 @@
+### Login para obtener token
+POST http://localhost:3001/api/client/login
+Content-Type: application/json
+
+{
+  "email": "albertofuertes715@gmail.com",
+  "password": "12345678"
+}
+
+### Obtener perfil del cliente (necesita token)
+GET http://localhost:3001/api/client/profile
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3ZTJiYjFjOTU3MzgwYjI2MzVkMjI2YiIsImVtYWlsIjoiYWxiZXJ0b2Z1ZXJ0ZXM3MTVAZ21haWwuY29tIiwiaWF0IjoxNzQ0MzA3NDg2LCJleHAiOjE3NDQzMTEwODZ9.p44PR6VILlnyHD24nNnftPsZk9CEVrdEPUeV-207R1M
+Content-Type: application/json

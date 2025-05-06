@@ -22,6 +22,17 @@ const {
   updateSession,
   deleteTreatmentFromClient,
   updateClientDiagnosticsGoals,
+  savePasswordAndSendVerificationCode,
+  verifyCode,
+  generateNewVerificationCode,
+  forgotPassword,
+  resetPassword,
+  authenticateClient,
+  addAsynchronousSession,
+  getAllAsyncSessions,
+  getSingleAsyncSession,
+  updateAsyncSession,
+  deleteAsyncSession,
 } = require("../controllers/client");
 
 router.get("/api/clients", getClients);
@@ -30,6 +41,14 @@ router.get("/api/client/:id", getClient);
 router.post("/api/client/create", createClient);
 router.delete("/api/client/:id", deleteClient);
 router.put("/api/client/:id", updateClient);
+// autogestion
+router.post("/api/client/save-password", savePasswordAndSendVerificationCode);
+router.post("/api/client/login", authenticateClient);
+router.post("/api/client/verify-code", verifyCode);
+router.post("/api/client/generate-new-code", generateNewVerificationCode);
+router.post("/api/client/forgot-password", forgotPassword);
+router.post("/api/client/reset-password", resetPassword);
+
 router.put("/api/client/personal_history/:id", updateClientPersonalHistory);
 router.put("/api/client/family_history/:id", updateClientFamilyHistory);
 
@@ -56,5 +75,11 @@ router.put("/api/client/:id/add-new-treatment", addNewTreatmentToClient);
 router.put("/api/client/:id/add-daily-review", addDailyReview);
 
 router.post("/api/client/find-client-by-name", findClientByName);
+// rutas para las sesiones asincronas
+router.patch("/api/client/:id/add-async-session", addAsynchronousSession);
+router.get("/api/client/:id/async-sessions", getAllAsyncSessions);
+router.get("/api/client/:id/async-session/:sessionId", getSingleAsyncSession);
+router.patch("/api/client/:id/update-async-session", updateAsyncSession);
+router.delete("/api/client/:id/async-session/:sessionId", deleteAsyncSession);
 
 module.exports = router;

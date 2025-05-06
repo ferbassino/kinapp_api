@@ -1,0 +1,16 @@
+PATCH http://localhost:3001/api/client/67c76eb68cdd466ec6d75537/add-async-session
+Content-Type: application/json
+
+{
+  "sessionData": {
+    "date": "2023-11-15",
+    "exercises": [
+      {
+        "name": "asincrono",
+        "sets": 3,
+        "reps": 12
+      }
+    ],
+    "completed": false
+  }
+}

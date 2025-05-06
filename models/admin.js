@@ -116,18 +116,18 @@ adminSchema.methods.comparePassword = async function (password) {
 };
 
 // Middleware para hashear la contraseña antes de guardar
-adminSchema.pre("save", async function (next) {
-  if (this.isModified("password")) {
-    try {
-      const salt = await bcrypt.genSalt(10);
-      this.password = await bcrypt.hash(this.password, salt);
-      next();
-    } catch (error) {
-      next(error);
-    }
-  } else {
-    next();
-  }
-});
+// adminSchema.pre("save", async function (next) {
+//   if (this.isModified("password")) {
+//     try {
+//       const salt = await bcrypt.genSalt(8);
+//       this.password = await bcrypt.hash(this.password, salt);
+//       next();
+//     } catch (error) {
+//       next(error);
+//     }
+//   } else {
+//     next();
+//   }
+// });
 
 module.exports = mongoose.model("Admin", adminSchema);
