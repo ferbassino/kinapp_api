@@ -834,7 +834,6 @@ exports.updateClientCurrentCondition = async (req, res) => {
       return res.status(404).json({ error: "Cliente no encontrado" });
     }
 
-    // Buscar la sesión activa del cliente
     const activeSessionIndex = client.sessionsHistory.findIndex(
       (session) => session.active === true
     );

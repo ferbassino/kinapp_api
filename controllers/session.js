@@ -148,7 +148,6 @@ exports.getSessionsByClientId = async (req, res) => {
   try {
     const { clientId } = req.params;
 
-    // Validar que clientId sea un ObjectId válido
     if (!mongoose.Types.ObjectId.isValid(clientId)) {
       return res.status(400).json({
         success: false,
