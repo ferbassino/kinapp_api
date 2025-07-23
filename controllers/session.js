@@ -4,11 +4,12 @@ const Appointment = require("../models/appointments");
 
 exports.createSession = async (req, res) => {
   const session = await mongoose.startSession();
-  session.startTransaction();
+  // session.startTransaction();
 
   try {
     const { appointmentId, clientId, userId, routine = [] } = req.body;
     console.log(appointmentId, clientId, userId, routine);
+    console.log("1");
 
     // 1. Validaciones básicas
     if (!appointmentId || !clientId || !userId) {
@@ -16,22 +17,27 @@ exports.createSession = async (req, res) => {
         "Faltan campos requeridos: appointmentId, clientId o userId"
       );
     }
+    console.log("2");
 
     // 2. Verificar que la cita existe y está disponible
     const appointment = await Appointment.findById(appointmentId).session(
       session
     );
+    console.log("3");
     if (!appointment) {
       throw new Error("La cita especificada no existe");
     }
+    console.log("4");
     if (appointment.status === "completed") {
       throw new Error("No se puede crear sesión para una cita completada");
     }
+    console.log("5");
 
     // 3. Validar estructura de la rutina
     if (!Array.isArray(routine)) {
       throw new Error("La rutina debe ser un array");
     }
+    console.log("6");
 
     // 4. Crear la sesión con datos procesados
     const sessionData = {
@@ -50,9 +56,12 @@ exports.createSession = async (req, res) => {
         })),
       })),
     };
+    console.log("7");
 
     const newSession = new Session(sessionData);
+    console.log("8");
     const savedSession = await newSession.save({ session });
+    console.log("9");
 
     // 5. Actualizar estado de la cita
     await Appointment.findByIdAndUpdate(
@@ -60,14 +69,17 @@ exports.createSession = async (req, res) => {
       { $set: { hasSession: true } },
       { session }
     );
+    console.log("10");
 
     await session.commitTransaction();
+    console.log("11");
 
     res.status(201).json({
       success: true,
       data: savedSession,
       message: "Sesión creada exitosamente",
     });
+    console.log("12");
   } catch (error) {
     await session.abortTransaction();
 
