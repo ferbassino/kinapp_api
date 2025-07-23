@@ -251,8 +251,6 @@ exports.uploadProfile = async (request, response) => {
 };
 
 exports.signOut = async (req, res) => {
-  console.log("entra en signout");
-
   if (req.headers && req.headers.authorization) {
     const token = req.headers.authorization.split(" ")[1];
 
@@ -355,6 +353,7 @@ exports.forgotPassword = async (req, res) => {
     });
 
   const token = await ResetToken.findOne({ owner: user._id });
+
   if (token)
     return sendError(
       res,
