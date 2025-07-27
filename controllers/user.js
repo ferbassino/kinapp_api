@@ -452,20 +452,62 @@ exports.getUsers = async (request, response) => {
 exports.updateUser = async (req, res) => {
   try {
     const { id } = req.params;
+
+    // Validar datos requeridos
+    if (!req.body.email || !req.body.userName) {
+      return res.status(400).json({
+        success: false,
+        message: "Email y nombre de usuario son requeridos",
+      });
+    }
+
+    // Preparar datos para actualización
+    const updateFields = {
+      userName: req.body.userName,
+      email: req.body.email,
+      mobCode: req.body.mobCode,
+      roles: req.body.roles,
+      level: req.body.level,
+      apps: req.body.apps,
+      data: {
+        name: req.body.data?.name,
+        surname: req.body.data?.surname,
+        cellphone: req.body.data?.cellphone,
+        state: req.body.data?.state,
+      },
+    };
+
+    // Manejar fechas si están presentes
+    if (req.body.payday) {
+      updateFields.payday = new Date(req.body.payday);
+    }
+    if (req.body.initialDate) {
+      updateFields.initialDate = new Date(req.body.initialDate);
+    }
+
     const result = await User.findByIdAndUpdate(
       id,
-      {
-        mobCode: req.body.mobCode,
-        sessionDate: req.body.sessionDate,
-        roles: req.body.roles,
-        verified: req.body.verified,
-        courses: req.body.courses,
-      },
-      { new: true }
+      { $set: updateFields },
+      { new: true, runValidators: true }
     );
-    res.json({ success: true, updatedUser: result });
+
+    if (!result) {
+      return res.status(404).json({
+        success: false,
+        message: "Usuario no encontrado",
+      });
+    }
+
+    res.json({
+      success: true,
+      updatedUser: result,
+    });
   } catch (error) {
-    console.log(error);
+    console.error("Error in updateUser:", error);
+    res.status(500).json({
+      success: false,
+      message: error.message || "Error al actualizar usuario",
+    });
   }
 };
 
